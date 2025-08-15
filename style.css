@@ -223,3 +223,20 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.btn-instagram {
+  display: inline-block;
+  background-color: orange; /* Color de fondo */
+  color: white; /* Texto blanco */
+  padding: 10px 15px;
+  margin-left: 5px; /* Espacio entre botones */
+  border-radius: 5px;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-instagram:hover {
+  background-color: darkorange; /* Color cuando pasa el mouse */
+}
