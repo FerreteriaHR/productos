@@ -218,12 +218,6 @@ body {
   transform: scale(1.1);
 }
 
-@media (max-width: 768px) {
-  .productos {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 .btn-instagram {
   display: inline-block;
   background-color: orange; /* Color de fondo */
@@ -239,4 +233,38 @@ body {
 
 .btn-instagram:hover {
   background-color: darkorange; /* Color cuando pasa el mouse */
+}
+
+/* Contenedor de productos */
+.productos-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columnas en PC */
+  gap: 20px; /* espacio entre productos */
+  justify-items: center; /* centra los productos en su columna */
+}
+
+/* Ajuste responsive para tablet y celular */
+@media (max-width: 1024px) {
+  .productos-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas en tablet */
+  }
+}
+
+@media (max-width: 768px) {
+  .productos-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en celular */
+  }
+}
+
+@media (max-width: 480px) {
+  .productos-container {
+    grid-template-columns: 1fr; /* 1 columna en celulares muy pequeños */
+  }
+}
+
+/* Ajuste de ancho de cada producto para que se vea proporcionado */
+.producto {
+  max-width: 200px; /* ajusta a tu gusto */
+  width: 100%;
+  box-sizing: border-box;
 }
