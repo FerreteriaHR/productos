@@ -267,7 +267,7 @@ body {
 
 /* Ajustar el título principal */
 h1 {
-  font-size: clamp(16px, 6vw, 16px); /* se adapta a pantalla */
+  font-size: clamp(16px, 5vw, 24px); /* se adapta a pantalla */
   text-align: center;
   word-wrap: break-word; /* evita que sobresalga */
   margin-bottom: 20px;
@@ -322,7 +322,7 @@ footer {
     word-break: keep-all;              /* no parte palabras */
     overflow-wrap: normal;             /* no fuerza cortes raros */
     text-wrap: balance;                /* intenta balancear líneas (si el navegador lo soporta) */
-    font-size: clamp(22px, 9vw, 32px); /* tamaño fluido */
+    font-size: clamp(16px, 9vw, 32px); /* tamaño fluido */
     line-height: 1.1;
     max-width: 12ch;                   /* fuerza que “HR” baje a la 2ª línea */
     margin: 0 auto;                    /* centra el bloque del título */
