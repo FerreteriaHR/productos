@@ -288,17 +288,23 @@ footer {
   max-width: 1200px; /* para que no se alargue demasiado en pantallas grandes */
 }
 
+.header-left {
+  width: 100%;       /* que ocupe todo el ancho posible */
+  padding: 0 10px;   /* un poco de respiro a los lados */
+  box-sizing: border-box; /* incluye padding dentro del ancho */
+}
+
 .header-left h1 {
-  font-size: clamp(14px, 6vw, 32px); /* tamaño adaptable según pantalla */
-  max-width: 100%;                   /* ocupa todo el contenedor */
-  text-align: center;                 /* centrado */
-  white-space: nowrap;                /* una sola línea */
+  font-size: clamp(12px, 6vw, 32px); /* letra adaptable */
+  text-align: center;
+  white-space: nowrap;               /* siempre en una sola línea */
   margin: 0 auto;
 }
 
-@media (max-width: 600px) {
+/* Ajuste para móviles muy pequeños */
+@media (max-width: 400px) {
   .header-left h1 {
-    font-size: 20px;         /* más pequeño en móviles */
+    font-size: clamp(10px, 5vw, 28px);
   }
 }
 
