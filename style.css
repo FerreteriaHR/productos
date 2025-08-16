@@ -253,3 +253,14 @@ body {
   background-color: darkorange; /* Color cuando pasa el mouse */
 }
 
+/* Eliminar márgenes por defecto */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Evitar que algo se desborde y genere scroll horizontal */
+body {
+  overflow-x: hidden;
+}
