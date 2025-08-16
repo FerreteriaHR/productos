@@ -116,7 +116,7 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0,0,0,0.8);
-  display: none;
+  display: none; /* se cambia a flex en JS al abrir */
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -124,12 +124,24 @@ body {
 
 .modal-contenido {
   background: white;
-  padding: 100px;
+  padding: 20px; /* antes 100px */
   border-radius: 10px;
   width: 90%;
   max-width: 500px;
   text-align: center;
   position: relative;
+  animation: slideUp 0.4s ease; /* animación */
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal-contenido img {
