@@ -327,6 +327,16 @@ footer {
     max-width: 12ch;                   /* fuerza que “HR” baje a la 2ª línea */
     margin: 0 auto;                    /* centra el bloque del título */
     text-align: center;
+
+    @media (max-width: 768px) {
+  .logo {
+    font-size: 20px; /* ajusta el tamaño del logo en móviles */
+    line-height: 1.2; /* ajusta la altura entre FERRETERIA y HR */
+    text-align: center; /* para que quede centrado */
+    word-break: normal; /* evita que se corte raro */
+    white-space: normal; /* permite salto de línea */
+  }
+}
   }
 }
 
