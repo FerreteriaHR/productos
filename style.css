@@ -280,16 +280,24 @@ footer {
   max-width: 1200px; /* para que no se alargue demasiado en pantallas grandes */
 }
 
-.header-left h1 {
-  font-size: clamp(12px, 6vw, 28px); /* letra adaptable */
+.header-left {
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
   text-align: center;
-  white-space: nowrap;               /* siempre en una sola línea */
-  margin: 0 auto;
 }
 
-/* Ajuste para móviles muy pequeños */
-@media (max-width: 400px) {
-  .header-left h1 {
-    font-size: clamp(10px, 5vw, 28px);
-  }
+.header-left h1 {
+  font-size: clamp(14px, 6vw, 32px); /* tamaño adaptable */
+  margin: 0 auto;
+  white-space: nowrap;                /* siempre en una línea */
 }
+
+.header-left hr {
+  width: 50%;                       /* ancho de la línea */
+  margin: 10px auto;                 /* espacio arriba y abajo, centrado */
+  border: 2px solid #000;           /* color y grosor */
+}
+
+/* Por si acaso aún había scroll lateral por algo suelto */
+html, body { overflow-x: hidden; }
