@@ -288,26 +288,16 @@ footer {
   max-width: 1200px; /* para que no se alargue demasiado en pantallas grandes */
 }
 
-/* Escritorio */
-@media (min-width: 601px) {
-  .header-left h1 {
-    white-space: nowrap;
-    font-size: clamp(28px, 3.5vw, 48px); /* reducido para que no se corte */
-    text-align: center;
-  }
+.header-left h1 {
+  font-size: 36px;      
+  text-align: center;
+  white-space: nowrap;   
+  margin: 0 auto;
 }
 
-/* Móvil */
 @media (max-width: 600px) {
   .header-left h1 {
-    white-space: normal;
-    word-break: normal;
-    overflow-wrap: normal;
-    font-size: clamp(10px, 6vw, 18px); /* máximo un poco menor para móviles */
-    line-height: 1.2;
-    margin: 0 auto;
-    max-width: 80%; /* que ocupe todo el ancho disponible */
-    text-align: center;
+    font-size: 24px;    
   }
 }
 
