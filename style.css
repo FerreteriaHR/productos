@@ -289,15 +289,18 @@ footer {
 }
 
 .header-left h1 {
-  font-size: 36px;      
+  font-size: 32px;           /* tamaño seguro para móviles y escritorio */
+  max-width: 100%;           /* ocupa todo el contenedor */
   text-align: center;
-  white-space: nowrap;   
+  white-space: nowrap;       /* en escritorio todo en una línea */
+  overflow-wrap: normal;     
+  word-break: normal;
   margin: 0 auto;
 }
 
 @media (max-width: 600px) {
   .header-left h1 {
-    font-size: 18px;    
+    font-size: 20px;         /* más pequeño en móviles */
   }
 }
 
