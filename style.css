@@ -267,7 +267,7 @@ body {
 
 /* Ajustar el título principal */
 h1 {
-  font-size: clamp(24px, 6vw, 48px); /* se adapta a pantalla */
+  font-size: clamp(24px, 6vw, 24px); /* se adapta a pantalla */
   text-align: center;
   word-wrap: break-word; /* evita que sobresalga */
   margin-bottom: 20px;
