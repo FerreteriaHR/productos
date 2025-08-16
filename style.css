@@ -239,32 +239,40 @@ body {
 .productos-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 columnas en PC */
-  gap: 20px; /* espacio entre productos */
-  justify-items: center; /* centra los productos en su columna */
+  gap: 20px;
+  justify-items: center; /* centra los productos horizontalmente */
+  width: 100%;
+  margin: 0 auto; /* asegura que el grid esté centrado */
+  box-sizing: border-box;
+  padding: 0 10px; /* opcional: pequeño padding lateral */
 }
 
-/* Ajuste responsive para tablet y celular */
+/* Ajustes responsive */
 @media (max-width: 1024px) {
   .productos-container {
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas en tablet */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
   .productos-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas en celular */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
   .productos-container {
-    grid-template-columns: 1fr; /* 1 columna en celulares muy pequeños */
+    grid-template-columns: 1fr;
   }
 }
 
-/* Ajuste de ancho de cada producto para que se vea proporcionado */
+/* Productos individuales */
 .producto {
-  max-width: 200px; /* ajusta a tu gusto */
   width: 100%;
+  max-width: 200px; /* ancho máximo por producto */
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; /* centra texto de nombre del producto */
 }
