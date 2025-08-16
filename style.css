@@ -280,14 +280,8 @@ footer {
   max-width: 1200px; /* para que no se alargue demasiado en pantallas grandes */
 }
 
-.header-left {
-  width: 100%;       /* que ocupe todo el ancho posible */
-  padding: 0 10px;   /* un poco de respiro a los lados */
-  box-sizing: border-box; /* incluye padding dentro del ancho */
-}
-
 .header-left h1 {
-  font-size: clamp(12px, 6vw, 32px); /* letra adaptable */
+  font-size: clamp(12px, 6vw, 28px); /* letra adaptable */
   text-align: center;
   white-space: nowrap;               /* siempre en una sola línea */
   margin: 0 auto;
@@ -299,6 +293,3 @@ footer {
     font-size: clamp(10px, 5vw, 28px);
   }
 }
-
-/* Por si acaso aún había scroll lateral por algo suelto */
-html, body { overflow-x: hidden; }
