@@ -287,3 +287,18 @@ body {
     padding: 8px;
   }
 }
+
+/* Ajuste general para que el flexbox sí se rompa */
+.productos-container {
+  display: flex;
+  flex-wrap: wrap; /* Permite que se acomoden en varias filas */
+  justify-content: center; /* Centra los productos */
+}
+
+/* En móviles: 2 por fila */
+@media screen and (max-width: 768px) {
+  .producto {
+    width: calc(50% - 20px) !important; /* 2 productos por fila */
+    margin: 10px;
+  }
+}
