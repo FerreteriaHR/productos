@@ -235,54 +235,55 @@ body {
   background-color: darkorange; /* Color cuando pasa el mouse */
 }
 
-/* Contenedor principal de toda la página */
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center; /* Centra el contenido horizontal */
-  align-items: flex-start; /* Mantiene desde arriba */
-  flex-direction: column;
-  font-family: Arial, sans-serif;
-}
-
-/* Contenedor de los productos */
-.productos-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Centra los productos en la fila */
-  gap: 20px; /* Espacio entre productos */
-  width: 90%; /* Se adapta al tamaño de la pantalla */
-  max-width: 1200px; /* No se haga demasiado ancho en laptop */
-  margin: 0 auto;
-}
-
-/* Cada producto */
-.producto {
-  flex: 1 1 calc(25% - 20px); /* 4 en 4 en laptop */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.producto img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Texto del producto */
-.producto p {
-  margin-top: 5px;
-  font-size: 14px;
-}
-
-/* Media query para celular */
+/* Responsivo para móviles */
 @media screen and (max-width: 768px) {
+  /* Productos 2 por fila */
   .producto {
-    flex: 1 1 calc(50% - 20px); /* 2 en 2 en móvil */
+    flex: 1 1 calc(50% - 20px) !important; /* 2 productos por fila */
+    margin: 10px;
+  }
+
+  /* Centrar contenedor de productos */
+  .productos-container {
+    justify-content: center !important;
+  }
+
+  /* Ajustar encabezados y demás contenido */
+  header, .botones, .buscador {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Ajustar tamaño de título */
+  .titulo {
+    font-size: 1.5em; /* o ajusta según prefieras */
+    word-wrap: break-word; /* evita que se corte */
+    margin-bottom: 10px;
+  }
+
+  /* Ajustar logo si se superpone */
+  .logo {
+    width: 80px; /* proporcional al tamaño del celular */
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  /* Botones más pequeños y centrados */
+  .botones button {
+    font-size: 14px;
+    padding: 8px 12px;
+    margin: 5px 0;
+  }
+
+  /* Buscador centrado y ajustado */
+  .buscador input {
+    width: 150px;
+    margin-bottom: 5px;
+  }
+  .buscador button {
+    width: 100px;
+    padding: 8px;
   }
 }
