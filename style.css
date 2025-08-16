@@ -302,12 +302,12 @@ footer {
 /* Por si acaso aún había scroll lateral por algo suelto */
 html, body { overflow-x: hidden; }
 
-.Aparatos de Aire .productos-grid,
-.Plomería .productos-grid {
+.aire .productos-grid,
+.plomeria .productos-grid {
   justify-items: center; /* centra los productos dentro de la grid */
 }
 
-.Material de Construcción .producto img {
+.construccion .producto img {
   max-height: 150px;  /* altura uniforme para todas las imágenes */
   object-fit: cover;  /* mantiene proporción y recorta si hace falta */
 }
