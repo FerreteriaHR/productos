@@ -306,7 +306,7 @@ footer {
     font-size: clamp(10px, 6vw, 18px); /* máximo un poco menor para móviles */
     line-height: 1.2;
     margin: 0 auto;
-    max-width: 100%; /* que ocupe todo el ancho disponible */
+    max-width: 80%; /* que ocupe todo el ancho disponible */
     text-align: center;
   }
 }
