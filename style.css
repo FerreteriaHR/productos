@@ -288,19 +288,14 @@ footer {
   max-width: 1200px; /* para que no se alargue demasiado en pantallas grandes */
 }
 
-/* Título principal */
 .titulo-principal {
-  font-size: clamp(28px, 8vw, 60px); /* Se ajusta automáticamente */
+  font-size: 2.8rem; /* Reduce un poco el tamaño */
   text-align: center;
-  white-space: nowrap; /* Evita que FERRETERIA se parta */
-  margin: 0 auto;
-  display: block;
+  word-wrap: normal; /* Evita que se corte en varias líneas */
+  white-space: nowrap; /* Mantiene FERRETERIA en una sola línea */
+  margin-bottom: 10px;
 }
-
-/* HR debajo */
 .titulo-secundario {
-  font-size: clamp(20px, 6vw, 40px);
+  font-size: 2rem;
   text-align: center;
-  margin-top: 5px;
-  display: block;
 }
