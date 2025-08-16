@@ -303,7 +303,7 @@ footer {
     white-space: normal;
     word-break: normal;
     overflow-wrap: normal;
-    font-size: clamp(16px, 6vw, 28px); /* máximo un poco menor para móviles */
+    font-size: clamp(16px, 6vw, 22px); /* máximo un poco menor para móviles */
     line-height: 1.2;
     margin: 0 auto;
     max-width: 100%; /* que ocupe todo el ancho disponible */
