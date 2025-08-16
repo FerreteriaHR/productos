@@ -264,3 +264,26 @@ body {
 body {
   overflow-x: hidden;
 }
+
+/* Ajustar el título principal */
+h1 {
+  font-size: clamp(24px, 6vw, 48px); /* se adapta a pantalla */
+  text-align: center;
+  word-wrap: break-word; /* evita que sobresalga */
+  margin-bottom: 20px;
+}
+
+/* Dar respiro en los lados de la página */
+body {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Asegurar que todo quede centrado */
+.container, 
+.productos-grid, 
+header, 
+footer {
+  margin: 0 auto;
+  max-width: 1200px; /* para que no se alargue demasiado en pantallas grandes */
+}
