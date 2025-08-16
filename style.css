@@ -289,11 +289,13 @@ footer {
 }
 
 .header-left h1 {
-  font-size: clamp(18px, 5vw, 32px); /* se adapta según pantalla */
+  font-size: clamp(16px, 4vw, 32px); /* se adapta según pantalla */
+  max-width: 100%;                   /* ocupa todo el contenedor */
   text-align: center;
+  white-space: nowrap;               /* nunca salta de línea */
+  overflow: hidden;                  /* evita que se salga del contenedor */
+  text-overflow: ellipsis;           /* opcional: si se pasa, muestra "..." */
   margin: 0 auto;
-  white-space: normal;        /* permite que se rompa si es necesario */
-  word-break: break-word;     /* rompe palabras largas si hace falta */
 }
 
 @media (max-width: 600px) {
