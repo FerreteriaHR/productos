@@ -288,14 +288,19 @@ footer {
   max-width: 1200px; /* para que no se alargue demasiado en pantallas grandes */
 }
 
-.titulo-principal {
-  font-size: 2.8rem; /* Reduce un poco el tamaño */
+/* Estilo general (pantallas grandes) */
+h1 {
+  font-size: 48px;   /* aquí ajusta al gusto */
   text-align: center;
-  word-wrap: normal; /* Evita que se corte en varias líneas */
-  white-space: nowrap; /* Mantiene FERRETERIA en una sola línea */
-  margin-bottom: 10px;
+  white-space: nowrap; /* mantiene en una sola línea */
 }
-.titulo-secundario {
-  font-size: 2rem;
-  text-align: center;
+
+/* Estilo para celular */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 32px;       /* se hace más chico */
+    white-space: normal;   /* permite que baje de línea */
+    line-height: 1.2;      /* espacio entre FERRETERIA y HR */
+    text-align: center;    
+  }
 }
