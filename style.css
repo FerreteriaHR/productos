@@ -289,12 +289,10 @@ footer {
 }
 
 .header-left h1 {
-  font-size: clamp(16px, 4vw, 32px); /* se adapta según pantalla */
+  font-size: clamp(14px, 6vw, 32px); /* tamaño adaptable según pantalla */
   max-width: 100%;                   /* ocupa todo el contenedor */
-  text-align: center;
-  white-space: nowrap;               /* nunca salta de línea */
-  overflow: hidden;                  /* evita que se salga del contenedor */
-  text-overflow: ellipsis;           /* opcional: si se pasa, muestra "..." */
+  text-align: center;                 /* centrado */
+  white-space: nowrap;                /* una sola línea */
   margin: 0 auto;
 }
 
