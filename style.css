@@ -330,7 +330,7 @@ footer {
 
     @media (max-width: 768px) {
   .logo {
-    font-size: 20px; /* ajusta el tamaño del logo en móviles */
+    font-size: 16px; /* ajusta el tamaño del logo en móviles */
     line-height: 1.2; /* ajusta la altura entre FERRETERIA y HR */
     text-align: center; /* para que quede centrado */
     word-break: normal; /* evita que se corte raro */
