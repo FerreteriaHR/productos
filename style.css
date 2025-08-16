@@ -115,27 +115,27 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0,0.8);
-  display: none; /* se cambia a flex en JS al abrir */
+  background-color: rgba(0,0,0,0.6);
+  display: none; /* cambiar a flex en JS */
   justify-content: center;
-  align-items: center;
+  align-items: flex-end; /* lo manda hacia abajo */
   z-index: 1000;
 }
 
 .modal-contenido {
   background: white;
-  padding: 20px; /* antes 100px */
-  border-radius: 10px;
-  width: 90%;
+  padding: 20px;
+  border-radius: 20px 20px 0 0; /* esquinas redondeadas arriba */
+  width: 100%;
   max-width: 500px;
   text-align: center;
   position: relative;
-  animation: slideUp 0.4s ease; /* animación */
+  animation: slideUp 0.4s ease;
 }
 
 @keyframes slideUp {
   from {
-    transform: translateY(100px);
+    transform: translateY(100%);
     opacity: 0;
   }
   to {
@@ -153,7 +153,7 @@ body {
 
 .modal-contenido .cerrar {
   position: absolute;
-  top: 40px;
+  top: 15px;
   right: 15px;
   font-size: 30px;
   font-weight: bold;
