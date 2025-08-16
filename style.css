@@ -288,18 +288,17 @@ footer {
   max-width: 1200px; /* para que no se alargue demasiado en pantallas grandes */
 }
 
-/* ====== Título responsivo ====== */
+/* Escritorio */
 @media (min-width: 601px) {
-  /* Escritorio: una sola línea */
   .header-left h1 {
-    white-space: nowrap !important;
+    white-space: nowrap;
     font-size: clamp(36px, 4vw, 64px);
     text-align: center;
   }
 }
 
+/* Móvil */
 @media (max-width: 600px) {
-  /* En móvil, el header se apila y se centra */
   header {
     display: flex;
     flex-wrap: wrap;
@@ -307,36 +306,26 @@ footer {
     align-items: center;
     gap: 8px;
   }
+
   .header-left {
     flex: 1 1 100%;
-    max-width: 100%;
     text-align: center;
   }
-  .logo-container {
-    width: 90px;       /* ajusta si quieres más chico/grande */
-  }
 
-  /* H1: más chico, centrado y en 2 líneas SÍ o SÍ */
   .header-left h1 {
-    white-space: normal !important;   /* permite salto */
-    word-break: keep-all;              /* no parte palabras */
-    overflow-wrap: normal;             /* no fuerza cortes raros */
-    text-wrap: balance;                /* intenta balancear líneas (si el navegador lo soporta) */
-    font-size: clamp(16px, 9vw, 32px); /* tamaño fluido */
-    line-height: 1.1;
-    max-width: 12ch;                   /* fuerza que “HR” baje a la 2ª línea */
-    margin: 0 auto;                    /* centra el bloque del título */
-    text-align: center;
-
-    @media (max-width: 768px) {
-  .logo {
-    font-size: 16px; /* ajusta el tamaño del logo en móviles */
-    line-height: 1.2; /* ajusta la altura entre FERRETERIA y HR */
-    text-align: center; /* para que quede centrado */
-    word-break: normal; /* evita que se corte raro */
-    white-space: normal; /* permite salto de línea */
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    font-size: clamp(18px, 8vw, 32px);
+    line-height: 1.2;
+    margin: 0 auto;
+    max-width: 100%; /* deja que ocupe todo el ancho disponible */
   }
-}
+
+  .logo {
+    font-size: 16px;
+    line-height: 1.2;
+    text-align: center;
   }
 }
 
