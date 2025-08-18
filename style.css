@@ -302,19 +302,10 @@ footer {
 /* Por si acaso aún había scroll lateral por algo suelto */
 html, body { overflow-x: hidden; }
 
-/* Contenedor de productos */
-.productos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;   /* centra todos los productos */
-  gap: 20px;                 /* espacio entre cuadros */
-  padding: 20px;             /* espacio hacia los bordes */
-  box-sizing: border-box;
-}
-
-/* Cada cuadro de producto */
-.producto {
-  flex: 0 1 200px;      /* ancho base de 200px */
-  max-width: 200px;
-  text-align: center;
+@media (max-width: 600px) {
+  .productos {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    padding: 10px; /* espacio a los lados */
+    gap: 15px;     /* espacio entre productos */
+  }
 }
