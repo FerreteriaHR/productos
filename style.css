@@ -302,24 +302,19 @@ footer {
 /* Por si acaso aún había scroll lateral por algo suelto */
 html, body { overflow-x: hidden; }
 
-/* Fuerza a que todos los productos midan lo mismo */
-.producto {
-  width: 200px;       /* ancho fijo para todos */
-  height: 260px;      /* alto fijo para todos */
+/* Contenedor de productos */
+.productos {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  margin: 10px;
+  flex-wrap: wrap;
+  justify-content: center;   /* centra todos los productos */
+  gap: 20px;                 /* espacio entre cuadros */
+  padding: 20px;             /* espacio hacia los bordes */
   box-sizing: border-box;
 }
 
-/* Ajusta las imágenes para que no deformen */
-.producto img {
-  width: 100%;
-  max-width: 160px;
-  height: 160px;
-  object-fit: contain; /* mete la imagen dentro sin deformar */
-  display: block;
+/* Cada cuadro de producto */
+.producto {
+  flex: 0 1 200px;      /* ancho base de 200px */
+  max-width: 200px;
+  text-align: center;
 }
