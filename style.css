@@ -302,10 +302,25 @@ footer {
 /* Por si acaso aún había scroll lateral por algo suelto */
 html, body { overflow-x: hidden; }
 
-.productos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  justify-content: center; /* centra los productos aunque falten */
-  gap: 15px;
-  padding: 10px;
+@media (max-width: 600px) {
+  .productos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* siempre 2 columnas en celular */
+    gap: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    justify-items: center; /* centra cada producto dentro de su columna */
+  }
+
+  .producto {
+    width: 100%;      /* ocupa todo el ancho de la columna */
+    max-width: 180px; /* evita que se estire demasiado */
+  }
+
+  .producto img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
 }
