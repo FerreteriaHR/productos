@@ -302,10 +302,10 @@ footer {
 /* Por si acaso aún había scroll lateral por algo suelto */
 html, body { overflow-x: hidden; }
 
-@media (max-width: 600px) {
-  .productos {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    padding: 10px; /* espacio a los lados */
-    gap: 15px;     /* espacio entre productos */
-  }
+.productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  justify-content: center; /* centra los productos aunque falten */
+  gap: 15px;
+  padding: 10px;
 }
