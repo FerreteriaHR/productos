@@ -302,30 +302,24 @@ footer {
 /* Por si acaso aún había scroll lateral por algo suelto */
 html, body { overflow-x: hidden; }
 
-/* Ajustar productos de cada categoría específica */
-[data-categoria="aire"] .productos-grid,
-[data-categoria="plomeria"] .productos-grid,
-[data-categoria="construccion"] .productos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  justify-content: center; /* centra los productos en la grid */
-}
-
-/* Igualar altura de los productos */
-[data-categoria="aire"] .producto,
-[data-categoria="plomeria"] .producto,
-[data-categoria="construccion"] .producto {
+/* Fuerza a que todos los productos midan lo mismo */
+.producto {
+  width: 200px;       /* ancho fijo para todos */
+  height: 260px;      /* alto fijo para todos */
   display: flex;
   flex-direction: column;
-  height: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+  box-sizing: border-box;
 }
 
-/* Altura uniforme para imágenes */
-[data-categoria="aire"] .producto img,
-[data-categoria="plomeria"] .producto img,
-[data-categoria="construccion"] .producto img {
+/* Ajusta las imágenes para que no deformen */
+.producto img {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
+  max-width: 160px;
+  height: 160px;
+  object-fit: contain; /* mete la imagen dentro sin deformar */
+  display: block;
 }
