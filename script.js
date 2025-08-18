@@ -105,3 +105,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+document.querySelector('.productos').style.justifyContent = 'center';
