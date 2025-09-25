@@ -5808,6 +5808,26 @@
     document.body.style.visibility = "visible";
   });
 </script>
+
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Selecciona TODO el contenido excepto la cabecera/inicio
+  const resto = document.querySelectorAll("main > section:not(:first-child), footer, .productos");
+
+  resto.forEach(sec => {
+    // Lo ocultamos mientras carga la página
+    sec.style.display = "none";
+  });
+
+  // Cuando la parte visible ya se mostró, damos un pequeño tiempo
+  // y empezamos a cargar el resto
+  setTimeout(() => {
+    resto.forEach(sec => {
+      sec.style.display = "block";
+    });
+  }, 1000); // <-- ajusta el tiempo (en ms) si quieres que aparezca antes o después
+});
+</script>
   
 </body>
 </html>
