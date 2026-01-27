@@ -211,7 +211,7 @@
 
   <!-- BOTONES REDES -->
   <div class="social-buttons">
-    <a href="https://wa.me/528715820989" target="_blank" class="btn-whatsapp" aria-label="WhatsApp" rel="noopener">
+    <a href="https://wa.me/528715238245" target="_blank" class="btn-whatsapp" aria-label="WhatsApp" rel="noopener">
       WhatsApp
     </a>
     <a href="https://www.facebook.com/profile.php?id=61575827222662" target="_blank" class="btn-facebook" aria-label="Facebook" rel="noopener">
@@ -6171,6 +6171,39 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(img);
   });
 });
+</script>
+
+  <script>
+(function () {
+  const imgs = Array.from(document.querySelectorAll("img[data-src]"));
+  let index = 0;
+  const batchSize = 10; // cuántas imágenes carga por tanda
+
+  function loadBatch() {
+    const slice = imgs.slice(index, index + batchSize);
+
+    slice.forEach(img => {
+      img.src = img.dataset.src;
+      img.removeAttribute("data-src");
+    });
+
+    index += batchSize;
+
+    if (index < imgs.length) {
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(loadBatch);
+      } else {
+        setTimeout(loadBatch, 200);
+      }
+    }
+  }
+
+  if (document.readyState === "complete") {
+    loadBatch();
+  } else {
+    window.addEventListener("load", loadBatch);
+  }
+})();
 </script>
   
 </body>
