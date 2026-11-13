@@ -1,279 +1,98 @@
 <!DOCTYPE html>
 <html lang="es">
-
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-J59315WNK7"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-J59315WNK7');
-</script>
-  
 <head>
-  <link rel="stylesheet" href="style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J59315WNK7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J59315WNK7');
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ferretería HR</title>
-  <style>
-    * {
-      margin: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #fff;
-      color: #222;
-      line-height: 1.6;
-      max-width: 960px;
-      margin: auto;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
-
-    .header-left {
-      max-width: 65%;
-    }
-
-    .header-left h1 {
-      font-size: 4rem;
-      font-weight: 900;
-      color: #000000;
-      letter-spacing: 1.5px;
-      margin-bottom: 10px;
-      line-height: 1.1;
-      border-bottom: 4px solid #ffc107;
-    }
-
-    .logo-container {
-      width: 150px;
-      flex-shrink: 0;
-    }
-
-    .logo-container img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    nav {
-      margin: 20px 0 10px;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 25px;
-      padding-left: 0;
-    }
-
-    nav a {
-      color: #ffc107;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 1.2rem;
-      transition: color 0.3s ease;
-      cursor: pointer;
-    }
-
-    nav a:hover {
-      color: #fff700;
-    }
-
-    .social-buttons {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 15px;
-      border-bottom: 3px solid #ffc107;
-      padding-bottom: 15px;
-    }
-
-    .social-buttons a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1rem;
-      color: white;
-      text-decoration: none;
-      box-shadow: 0 4px 6px rgb(0 0 0 / 0.15);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      padding: 10px 16px;
-    }
-
-    .btn-whatsapp {
-      background-color: #25d366;
-    }
-
-    .btn-whatsapp:hover {
-      background-color: #1ebe57;
-      transform: scale(1.05);
-    }
-
-    .btn-facebook {
-      background-color: #1877f2;
-    }
-
-    .btn-facebook:hover {
-      background-color: #0f63c9;
-      transform: scale(1.05);
-    }
-
-    .descripcion {
-      margin-top: 25px;
-      border-bottom: 3px solid #ffc107;
-      font-size: 1.2rem;
-      color: #444;
-      margin-bottom: 10px;
-    }
-
-    section {
-      margin-bottom: 40px;
-    }
-
-    h2 {
-      color: #000;
-      margin-bottom: 15px;
-      border-bottom: 3px solid #ffc107;
-      display: inline-block;
-    }
-
-    footer {
-      text-align: center;
-      background-color: #000;
-      color: #fff;
-      margin-top: 40px;
-      border-radius: 6px;
-      padding: 20px;
-    }
-
-    a {
-      color: #ffc107;
-      transition: color 0.3s ease;
-    }
-
-    a:hover {
-      color: #fff700;
-    }
-
-    #productos-section {
-      display: none;
-    }
-
-    .buscador {
-      margin: 30px 0;
-    }
-
-    .buscador input[type="text"] {
-      width: 100%;
-      font-size: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 6px;
-      padding: 8px;
-    }
-
-    .productos-title {
-      font-size: 3rem;
-      font-weight: 900;
-      color: #000;
-      margin-top: 40px;
-      border-bottom: 4px solid #ffc107;
-    }
-  </style>
+  <title>Ferretería HR | Catálogo en Línea</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="header-left">
-      <h1>Ferretería HR</h1>
-    </div>
-    <div class="logo-container">
-      <img src="logo.jpg" alt="Logo Ferretería HR" />
+
+  <header class="top-bar">
+    <div class="header-inner">
+      <div class="brand">
+        <img src="logo.jpg" alt="Logo Ferretería HR" />
+        <h1>Ferretería <span>HR</span></h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a onclick="mostrarSeccion('inicio')" class="activo">Inicio</a></li>
+          <li><a onclick="mostrarSeccion('productos')">Catálogo</a></li>
+          <li><a onclick="mostrarSeccion('contacto')">Ubicación</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 
-  <!-- MENÚ -->
-  <nav>
-    <ul>
-      <li><a href="#" onclick="mostrarSeccion('inicio')">Inicio</a></li>
-      <li><a href="#" onclick="mostrarSeccion('productos')">Productos</a></li>
-      <li><a href="#" onclick="mostrarSeccion('contacto')">Contacto</a></li>
-    </ul>
-  </nav>
+  <main class="container">
+    <!-- SECCIÓN INICIO -->
+    <section class="hero-card" id="inicio">
+      <div class="hero-text">
+        <span class="hero-badge">📍 En el corazón de Lerdo, Durango</span>
+        <h2>Todo lo que necesitas, en un solo lugar</h2>
+        <p>En <strong>Ferretería HR</strong> contamos con surtido completo para tus proyectos de hogar, construcción, plomería, electricidad y aire lavado.</p>
+        
+        <div class="beneficios-grid">
+          <div class="beneficio-item">⚡ Atención rápida</div>
+          <div class="beneficio-item">🛠️ Gran variedad</div>
+          <div class="beneficio-item">💰 Precios accesibles</div>
+          <div class="beneficio-item">🤝 Siempre a la orden</div>
+        </div>
 
-  <!-- BOTONES REDES -->
-  <div class="social-buttons">
-    <a href="https://wa.me/528715238245" target="_blank" class="btn-whatsapp" aria-label="WhatsApp" rel="noopener">
-      WhatsApp
-    </a>
-    <a href="https://www.facebook.com/profile.php?id=61575827222662" target="_blank" class="btn-facebook" aria-label="Facebook" rel="noopener">
-      Facebook
-    </a>
-<a href="https://www.instagram.com/hr_ferre?igsh=MTRjbGtncmhnZGtkdQ%3D%3D&utm_source=qr" 
-   target="_blank" 
-   class="btn-instagram">
-  Instagram
-</a>
-    </div>
-  
- <!-- INICIO -->
-<div class="descripcion" id="inicio">
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 40px;">
-    <div style="flex: 1; min-width: 250px;">
-      <p>
-        Todo lo que necesitas, en un solo lugar<br />
-        En <strong>Ferretería HR</strong> nos enorgullece ser tu ferretería de confianza en el corazón de Lerdo. Ofrecemos una gran cantidad de:
-      </p>
-      <p>
-        🟡 Atención rápida<br />
-        ⚫ Variedad de productos<br />
-        🟡 Precios accesibles<br />
-        ⚫ Y siempre a la orden
-        </p>
+        <div class="social-buttons">
+          <a href="https://wa.me/528715238245" target="_blank" class="btn-social btn-whatsapp" rel="noopener">WhatsApp</a>
+          <a href="https://www.facebook.com/profile.php?id=61575827222662" target="_blank" class="btn-social btn-facebook" rel="noopener">Facebook</a>
+          <a href="https://www.instagram.com/hr_ferre?igsh=MTRjbGtncmhnZGtkdQ%3D%3D&utm_source=qr" target="_blank" class="btn-social btn-instagram" rel="noopener">Instagram</a>
+        </div>
       </div>
-      <div style="flex-shrink: 0; max-width: 280px;">
-        <img src="ferre.jpg" alt="Imagen lateral" style="width: 100%; border-radius: 12px;" />
-      </div>
-    </div>
-  </div>
 
- <section id="productos-section">
-  <h1 class="productos-title">PRODUCTOS</h1>
-  <div class="buscador">
-    <input type="text" id="buscador">
-    <button onclick="buscarProducto()">🔍</button>
-  </div>
-  <div class="categorias">
-    <button class="boton-categoria" data-categoria="aire">Aparatos de Aire</button>
-    <button class="boton-categoria" data-categoria="limpieza">Artículos de Limpieza</button>
-    <button class="boton-categoria" data-categoria="bicicletas">Bicicletas</button>
-    <button class="boton-categoria" data-categoria="construccion">Material de Construcción</button>
-    <button class="boton-categoria" data-categoria="cpvc">CPVC</button>
-    <button class="boton-categoria" data-categoria="abrasivos">Discos y Abrasivos</button>
-    <button class="boton-categoria" data-categoria="electrico">Material Eléctrico</button>
-    <button class="boton-categoria" data-categoria="galvanizado">Galvanizado</button>
-    <button class="boton-categoria" data-categoria="gas">Gas</button>
-    <button class="boton-categoria" data-categoria="herramientas">Herramientas</button>
-    <button class="boton-categoria" data-categoria="soldadura">Herrería y Soldadura</button>
-    <button class="boton-categoria" data-categoria="jardin">Mangueras y Jardín</button>
-    <button class="boton-categoria" data-categoria="pegamentos">Pegamentos y Cintas</button>
-    <button class="boton-categoria" data-categoria="pinturas">Pinturas y Solventes</button>
-    <button class="boton-categoria" data-categoria="plomeria">Plomería</button>
-    <button class="boton-categoria" data-categoria="pvc">PVC</button>
-    <button class="boton-categoria" data-categoria="ppr">PPR</button>
-    <button class="boton-categoria" data-categoria="seguridad">Seguridad</button>
-    <button class="boton-categoria" data-categoria="tornilleria">Tornillería</button>
-    <button class="boton-categoria" data-categoria="otros">Otros</button>
-  </div>
-</section>
+      <div class="hero-img">
+        <img src="ferre.jpg" alt="Ferretería HR Lerdo" />
+      </div>
+    </section>
+
+    <!-- SECCIÓN CATÁLOGO -->
+    <section id="productos-section">
+      <div class="catalogo-header">
+        <h2>CATÁLOGO DE PRODUCTOS</h2>
+        <div class="buscador-box">
+          <input type="text" id="buscador" placeholder="Buscar herramienta, tubo, banda, cemento...">
+          <span>🔍</span>
+        </div>
+      </div>
+
+      <div class="categorias-wrapper">
+        <button class="boton-categoria activa" data-categoria="todos">Todos</button>
+        <button class="boton-categoria" data-categoria="aire">Aparatos de Aire</button>
+        <button class="boton-categoria" data-categoria="limpieza">Artículos de Limpieza</button>
+        <button class="boton-categoria" data-categoria="bicicletas">Bicicletas</button>
+        <button class="boton-categoria" data-categoria="construccion">Construcción</button>
+        <button class="boton-categoria" data-categoria="cpvc">CPVC</button>
+        <button class="boton-categoria" data-categoria="abrasivos">Discos y Abrasivos</button>
+        <button class="boton-categoria" data-categoria="electrico">Eléctrico</button>
+        <button class="boton-categoria" data-categoria="galvanizado">Galvanizado</button>
+        <button class="boton-categoria" data-categoria="gas">Gas</button>
+        <button class="boton-categoria" data-categoria="herramientas">Herramientas</button>
+        <button class="boton-categoria" data-categoria="soldadura">Herrería y Soldadura</button>
+        <button class="boton-categoria" data-categoria="jardin">Mangueras y Jardín</button>
+        <button class="boton-categoria" data-categoria="pegamentos">Pegamentos y Cintas</button>
+        <button class="boton-categoria" data-categoria="pinturas">Pinturas y Solventes</button>
+        <button class="boton-categoria" data-categoria="plomeria">Plomería</button>
+        <button class="boton-categoria" data-categoria="pvc">PVC</button>
+        <button class="boton-categoria" data-categoria="ppr">PPR</button>
+        <button class="boton-categoria" data-categoria="seguridad">Seguridad</button>
+        <button class="boton-categoria" data-categoria="tornilleria">Tornillería</button>
+        <button class="boton-categoria" data-categoria="otros">Otros</button>
+      </div>
 
 <div class="productos-grid">
   <div class="producto" data-categoria="aire">
@@ -6075,136 +5894,32 @@
 
 </div>
 
-<!-- CONTACTO -->
-<section id="contacto" style="display: none;">
-  <h2>Contacto</h2>
-  <p style="margin-top: 20px; margin-bottom: 10px; color: #000">Ubicación en Maps</p>
-  <div class="mapa-container">
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3600.0077855388363!2d-103.53230202543429!3d25.53811757749311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x868fd9004be31e33%3A0x7ffb837cd894b662!2sFerreter%C3%ADa%20HR!5e0!3m2!1ses-419!2smx!4v1752622399902!5m2!1ses-419!2smx"
-      style="width: 100%; height: 300px; border: 0; border-radius: 8px;"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-  </div>
-  <p><strong>Dirección:</strong> Calle Miguel Hidalgo esquina con Donato Guerra #95 Norte, Zona Centro, Lerdo, Durango.</p>
-  <p><strong>WhatsApp:</strong> <a href="https://wa.me/528715238245">8715238245</a></p>
-  <p><strong>Teléfono alternativo:</strong> 8715820989</p>
-  <p><strong>Facebook:</strong> <a href="https://www.facebook.com/profile.php?id=61575827222662">Ferretería HR</a></p>
-  <p><strong>Instagram:</strong> <a href="https://www.instagram.com/hr_ferre?igsh=MTRjbGtncmhnZGtkdQ%3D%3D&utm_source=qr">hr_ferre</a></p>
 </section>
 
-<script>
-  function mostrarSeccion(seccion) {
-    document.getElementById('inicio').style.display = (seccion === 'inicio') ? 'block' : 'none';
-    document.getElementById('productos-section').style.display = (seccion === 'productos') ? 'block' : 'none';
-    document.getElementById('contacto').style.display = (seccion === 'contacto') ? 'block' : 'none';
-  }
+    <!-- SECCIÓN CONTACTO / UBICACIÓN -->
+    <section id="contacto-section" style="display:none;">
+      <div class="contacto-card">
+        <div class="contacto-info">
+          <h3>Visítanos en Lerdo</h3>
+          <p><strong>📍 Ubicación:</strong> Centro de Ciudad Lerdo, Durango.</p>
+          <p><strong>📱 WhatsApp Mostrador:</strong> 871 523 8245</p>
+          <p><strong>🕒 Horario:</strong> Lunes a Sábado</p>
+          <div class="social-buttons" style="margin-top:20px;">
+            <a href="https://wa.me/528715238245" target="_blank" class="btn-social btn-whatsapp">Enviar WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  window.onload = function () {
-    mostrarSeccion('inicio');
-  };
-</script>
+  <button id="btn-carrito-flotante" onclick="enviarCotizacionWhatsApp()"></button>
+  <button id="btnSubir" onclick="subirArriba()" title="Subir">⬆</button>
 
-<script src="script.js"></script>
+  <footer>
+    <p><strong>Ferretería HR</strong> &copy; 2026 - Todos los derechos reservados.</p>
+    <button class="btn-admin-discreto" id="btn-abrir-admin" title="Acceso Administración">🔒 Acceso Personal</button>
+  </footer>
 
-<!-- Botón Flecha Hacia Arriba -->
-<button id="btnSubir" title="Volver arriba">↑</button>
-
-<script>
-  const btnSubir = document.getElementById("btnSubir");
-
-  window.addEventListener("scroll", function () {
-    if (window.scrollY > 300) {
-      btnSubir.style.display = "block";
-    } else {
-      btnSubir.style.display = "none";
-    }
-  });
-
-  btnSubir.addEventListener("click", function () {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  });
-</script>
-
-<footer>
-  <p>&copy; 2025 Ferretería HR. Todos los derechos reservados.</p>
-</footer>
-
-  <script>
-  window.addEventListener("load", function() {
-    document.body.style.visibility = "visible";
-  });
-</script>
-
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const images = document.querySelectorAll("img");
-
-  const loadImg = (img) => {
-    const src = img.getAttribute("data-src");
-    if (!src) return;
-    img.src = src;
-    img.removeAttribute("data-src");
-  };
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        loadImg(entry.target);
-        obs.unobserve(entry.target);
-      }
-    });
-  }, {
-    rootMargin: "200px"
-  });
-
-  images.forEach(img => {
-    if (img.src) {
-      img.setAttribute("data-src", img.src);
-      img.removeAttribute("src");
-    }
-    observer.observe(img);
-  });
-});
-</script>
-
-  <script>
-(function () {
-  const imgs = Array.from(document.querySelectorAll("img[data-src]"));
-  let index = 0;
-  const batchSize = 10; // cuántas imágenes carga por tanda
-
-  function loadBatch() {
-    const slice = imgs.slice(index, index + batchSize);
-
-    slice.forEach(img => {
-      img.src = img.dataset.src;
-      img.removeAttribute("data-src");
-    });
-
-    index += batchSize;
-
-    if (index < imgs.length) {
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(loadBatch);
-      } else {
-        setTimeout(loadBatch, 200);
-      }
-    }
-  }
-
-  if (document.readyState === "complete") {
-    loadBatch();
-  } else {
-    window.addEventListener("load", loadBatch);
-  }
-})();
-</script>
-  
+  <script src="script.js"></script>
 </body>
 </html>
