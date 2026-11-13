@@ -12,6 +12,20 @@
   --sombra-hover: 0 8px 20px rgba(0, 0, 0, 0.14);
 }
 
+/* --- MODO OSCURO --- */
+body.modo-oscuro {
+  --fondo: #121212;
+  --blanco: #1e1e1e;
+  --texto: #f1f1f1;
+  --texto-suave: #b0b0b0;
+  --borde: #333333;
+  --sombra: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+body.modo-oscuro .producto-img-wrap {
+  background-color: #262626 !important;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -24,6 +38,7 @@ body {
   color: var(--texto);
   line-height: 1.5;
   overflow-x: hidden;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* --- HEADER Y NAVEGACIÓN --- */
@@ -75,15 +90,16 @@ body {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 nav a {
   color: var(--blanco);
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
-  padding: 8px 14px;
+  font-size: 0.9rem;
+  padding: 8px 12px;
   border-radius: 8px;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -92,6 +108,28 @@ nav a {
 nav a:hover, nav a.activo {
   background-color: var(--amarillo);
   color: var(--negro);
+}
+
+.header-controles {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-control-header {
+  background-color: #333;
+  color: var(--amarillo);
+  border: 1px solid var(--amarillo);
+  padding: 8px 12px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-control-header:hover {
+  transform: scale(1.05);
 }
 
 /* --- CONTENEDOR PRINCIPAL --- */
@@ -133,10 +171,15 @@ nav a:hover, nav a.activo {
   border: 1px solid var(--amarillo);
 }
 
+body.modo-oscuro .hero-badge {
+  background-color: #2c2500;
+  color: #ffd54f;
+}
+
 .hero-text h2 {
   font-size: clamp(1.6rem, 3.5vw, 2.3rem);
   font-weight: 800;
-  color: var(--negro);
+  color: var(--texto);
   margin-bottom: 12px;
 }
 
@@ -155,6 +198,7 @@ nav a:hover, nav a.activo {
 
 .beneficio-item {
   background: var(--fondo);
+  color: var(--texto);
   padding: 10px 14px;
   border-radius: 10px;
   font-weight: 600;
@@ -162,6 +206,7 @@ nav a:hover, nav a.activo {
   display: flex;
   align-items: center;
   gap: 8px;
+  border: 1px solid var(--borde);
 }
 
 .hero-img {
@@ -192,22 +237,125 @@ nav a:hover, nav a.activo {
   border-radius: 50px;
   font-weight: 700;
   font-size: 0.95rem;
-  color: var(--blanco);
+  color: #fff;
   text-decoration: none;
   transition: transform 0.2s, opacity 0.2s;
   box-shadow: 0 3px 8px rgba(0,0,0,0.12);
 }
 
-.btn-social:hover {
-  transform: translateY(-2px);
-  opacity: 0.95;
-}
-
+.btn-social:hover { transform: translateY(-2px); opacity: 0.95; }
 .btn-whatsapp { background-color: #25d366; }
 .btn-facebook { background-color: #1877f2; }
 .btn-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 
-/* --- SECCIÓN PRODUCTOS --- */
+/* --- SECCIONES NUEVAS (UBICACIÓN Y HORARIOS) --- */
+.seccion-card-completa {
+  background: var(--blanco);
+  border-radius: 16px;
+  padding: 35px;
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: center;
+  border-left: 6px solid var(--amarillo);
+}
+
+.info-texto {
+  flex: 1;
+  min-width: 280px;
+}
+
+.info-texto h2 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  color: var(--texto);
+}
+
+.info-texto p {
+  color: var(--texto-suave);
+  margin-bottom: 20px;
+}
+
+.detalles-contacto-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detalle-box {
+  background: var(--fondo);
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--borde);
+  font-size: 0.95rem;
+}
+
+.mapa-contenedor {
+  flex: 1;
+  min-width: 280px;
+}
+
+.mapa-falso-preview {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+  border-radius: 12px;
+  border: 2px dashed var(--amarillo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  font-weight: 700;
+  color: #444;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.mapa-falso-preview:hover {
+  transform: scale(1.02);
+}
+
+body.modo-oscuro .mapa-falso-preview {
+  background: linear-gradient(135deg, #222, #2a2a2a);
+  color: #ddd;
+}
+
+/* Tabla Horarios */
+.tabla-horarios {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.fila-horario {
+  display: flex;
+  justify-content: space-between;
+  background: var(--fondo);
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--borde);
+  font-size: 0.95rem;
+}
+
+.aviso-24-7 {
+  background: #fff8e1;
+  border: 1px solid var(--amarillo);
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: #554100;
+  font-weight: 600;
+}
+
+body.modo-oscuro .aviso-24-7 {
+  background: #2c2500;
+  color: #ffe082;
+}
+
+/* --- CATÁLOGO --- */
 .catalogo-header {
   display: flex;
   flex-wrap: wrap;
@@ -220,12 +368,11 @@ nav a:hover, nav a.activo {
 .catalogo-header h2 {
   font-size: 1.8rem;
   font-weight: 900;
-  color: var(--negro);
+  color: var(--texto);
   border-bottom: 4px solid var(--amarillo);
   padding-bottom: 4px;
 }
 
-/* --- BUSCADOR --- */
 .buscador-box {
   position: relative;
   flex: 1;
@@ -240,12 +387,12 @@ nav a:hover, nav a.activo {
   border: 2px solid var(--borde);
   border-radius: 50px;
   background-color: var(--blanco);
+  color: var(--texto);
   outline: none;
 }
 
 .buscador-box input:focus {
   border-color: var(--amarillo);
-  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.25);
 }
 
 .buscador-box span {
@@ -256,7 +403,6 @@ nav a:hover, nav a.activo {
   pointer-events: none;
 }
 
-/* --- CATEGORÍAS --- */
 .categorias-wrapper {
   display: flex;
   gap: 8px;
@@ -279,17 +425,19 @@ nav a:hover, nav a.activo {
   transition: all 0.2s ease;
 }
 
-.boton-categoria:hover {
-  border-color: var(--negro);
-}
-
+.boton-categoria:hover { border-color: var(--texto); }
 .boton-categoria.activa {
   background-color: var(--negro);
   color: var(--amarillo);
   border-color: var(--negro);
 }
 
-/* --- GRID DE PRODUCTOS --- */
+body.modo-oscuro .boton-categoria.activa {
+  background-color: var(--amarillo);
+  color: var(--negro);
+}
+
+/* --- GRID PRODUCTOS --- */
 .productos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -324,7 +472,7 @@ nav a:hover, nav a.activo {
   align-items: center;
   justify-content: center;
   padding: 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--borde);
 }
 
 .producto img {
@@ -345,24 +493,21 @@ nav a:hover, nav a.activo {
   font-size: 0.72rem;
   text-transform: uppercase;
   font-weight: 700;
-  color: #888;
-  letter-spacing: 0.5px;
+  color: var(--texto-suave);
 }
 
 .producto p {
   font-weight: 700;
   font-size: 0.98rem;
-  color: var(--negro);
-  line-height: 1.3;
+  color: var(--texto);
 }
 
-/* --- BOTÓN DE FAVORITO EN CADA TARJETA --- */
 .btn-favorito {
   position: absolute;
   top: 10px;
   right: 10px;
   background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--borde);
   border-radius: 50%;
   width: 34px;
   height: 34px;
@@ -371,36 +516,10 @@ nav a:hover, nav a.activo {
   justify-content: center;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
   z-index: 5;
-  transition: transform 0.15s;
 }
 
-.btn-favorito:hover {
-  transform: scale(1.15);
-}
-
-/* --- CONTACTO --- */
-.contacto-card {
-  background: var(--blanco);
-  border-radius: 16px;
-  padding: 30px;
-  box-shadow: var(--sombra);
-}
-
-.contacto-info h3 {
-  font-size: 1.4rem;
-  margin-bottom: 15px;
-  border-bottom: 3px solid var(--amarillo);
-  display: inline-block;
-}
-
-.contacto-info p {
-  margin-bottom: 12px;
-  font-size: 1rem;
-}
-
-/* --- MODALES --- */
+/* --- MODALES Y FLOTANTES --- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -415,6 +534,7 @@ nav a:hover, nav a.activo {
 
 .modal-contenido {
   background: var(--blanco);
+  color: var(--texto);
   padding: 25px;
   border-radius: 18px;
   width: 100%;
@@ -424,43 +544,16 @@ nav a:hover, nav a.activo {
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
-.modal-contenido img {
-  width: 100%;
-  max-height: 240px;
-  object-fit: contain;
-  margin-bottom: 15px;
-  border-radius: 10px;
-}
-
 .modal-contenido .cerrar {
   position: absolute;
   top: 12px;
   right: 16px;
   font-size: 28px;
   font-weight: bold;
-  color: #666;
+  color: var(--texto-suave);
   cursor: pointer;
 }
 
-.modal-acciones {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.btn-cotizar-add {
-  background-color: var(--negro);
-  color: var(--amarillo);
-  border: none;
-  padding: 12px;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-
-/* --- BOTONES FLOTANTES INFERIORES --- */
 .botones-flotantes-izq {
   position: fixed;
   bottom: 20px;
@@ -495,39 +588,32 @@ nav a:hover, nav a.activo {
   padding: 10px 18px;
   font-weight: 700;
   font-size: 0.9rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   display: none;
   align-items: center;
   gap: 6px;
 }
 
-.item-fav-modal {
+.item-cotizador-modal, .item-fav-modal {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f8f9fa;
+  background: var(--fondo);
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--borde);
   gap: 10px;
 }
 
-.item-fav-modal span {
+.item-cotizador-modal span, .item-fav-modal span {
   font-weight: 700;
   font-size: 0.9rem;
-  color: #222;
+  color: var(--texto);
 }
 
-.item-fav-acciones {
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.btn-mini-cotizar {
-  background: var(--amarillo);
-  color: var(--negro);
+.btn-mini-quitar {
+  background: #ffebee;
+  color: #c62828;
   border: none;
   padding: 6px 10px;
   border-radius: 6px;
@@ -536,18 +622,6 @@ nav a:hover, nav a.activo {
   cursor: pointer;
 }
 
-.btn-mini-quitar {
-  background: #ffebee;
-  color: #c62828;
-  border: none;
-  padding: 6px 9px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
-/* --- CLIENTES HEADER --- */
 .btn-cliente-header {
   background-color: var(--amarillo);
   color: var(--negro);
@@ -557,27 +631,12 @@ nav a:hover, nav a.activo {
   font-weight: 800;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: transform 0.2s;
 }
 
 .btn-cliente-logueado {
   background-color: #222;
   color: var(--amarillo);
   border: 1px solid var(--amarillo);
-}
-
-.lista-ventajas {
-  list-style: none;
-  background: #fffbeb;
-  border: 1px solid #ffe082;
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 16px;
-  font-size: 0.88rem;
-}
-
-.lista-ventajas li {
-  margin-bottom: 6px;
 }
 
 .campo-form {
@@ -591,22 +650,17 @@ nav a:hover, nav a.activo {
   margin-bottom: 4px;
 }
 
-.campo-form input[type="text"],
-.campo-form input[type="email"],
-.campo-form input[type="password"] {
+.campo-form input {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--borde);
+  background: var(--fondo);
+  color: var(--texto);
   border-radius: 8px;
   font-size: 0.95rem;
   outline: none;
 }
 
-.campo-form input:focus {
-  border-color: var(--amarillo);
-}
-
-/* --- BOTÓN SUBIR --- */
 #btnSubir {
   position: fixed;
   bottom: 20px;
@@ -619,12 +673,10 @@ nav a:hover, nav a.activo {
   height: 46px;
   font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   z-index: 950;
   display: none;
 }
 
-/* --- FOOTER --- */
 footer {
   text-align: center;
   background-color: var(--negro);
@@ -643,7 +695,4 @@ footer {
   font-size: 0.85rem;
   margin-top: 10px;
 }
-
-.btn-admin-discreto:hover {
-  color: var(--amarillo);
-}
+.btn-admin-discreto:hover { color: var(--amarillo); }
