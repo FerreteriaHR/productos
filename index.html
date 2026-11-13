@@ -14,6 +14,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ferretería HR | Catálogo en Línea</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Librería jsPDF para generar el comprobante profesional en PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -27,13 +29,13 @@
         <ul>
           <li><a onclick="mostrarSeccion('inicio')" class="activo">Inicio</a></li>
           <li><a onclick="mostrarSeccion('productos')">Catálogo</a></li>
-          <li><a onclick="mostrarSeccion('contacto')">Ubicación</a></li>
+          <li><a onclick="mostrarSeccion('ubicacion')">Ubicación</a></li>
+          <li><a onclick="mostrarSeccion('horarios')">Horarios</a></li>
         </ul>
       </nav>
-      <div id="zona-cliente">
-        <button id="btn-abrir-auth" class="btn-cliente-header" onclick="abrirModalCliente()">
-          ✨ Únete como cliente
-        </button>
+      <div class="header-controles">
+        <button id="btn-modo-oscuro" class="btn-control-header" onclick="alternarModoOscuro()">🌙 Modo Oscuro</button>
+        <button id="btn-abrir-auth" class="btn-cliente-header" onclick="abrirModalCliente()">✨ Únete como cliente</button>
       </div>
     </div>
   </header>
@@ -5899,18 +5901,50 @@
 
 </div>
 
+  </section>
+    <!-- SECCIÓN UBICACIÓN -->
+    <section id="ubicacion-section" style="display:none;">
+      <div class="seccion-card-completa">
+        <div class="info-texto">
+          <span class="hero-badge">📍 Encuéntranos fácilmente</span>
+          <h2>Ubicación y Contacto</h2>
+          <p>Nos encontramos ubicados en el corazón de Ciudad Lerdo, Durango. Visítanos en mostrador o contáctanos directamente.</p>
+          <div class="detalles-contacto-grid">
+            <div class="detalle-box"><strong>Dirección:</strong> Centro, Ciudad Lerdo, Dgo.</div>
+            <div class="detalle-box"><strong>WhatsApp Mostrador:</strong> 871 523 8245</div>
+          </div>
+          <div style="margin-top: 20px;">
+            <a href="https://maps.google.com/?q=Ferreteria+HR+Lerdo+Durango" target="_blank" class="btn-social btn-whatsapp" style="display:inline-flex; justify-content:center; text-decoration:none;">
+              🗺️ Abrir ruta en Google Maps / Waze
+            </a>
+          </div>
+        </div>
+        <div class="mapa-contenedor">
+          <a href="https://maps.google.com/?q=Ferreteria+HR+Lerdo+Durango" target="_blank" title="Abrir en Google Maps">
+            <div class="mapa-falso-preview">
+              <span>📍 Clic aquí para abrir el mapa de la Ferretería</span>
+            </div>
+          </a>
+        </div>
+      </div>
     </section>
 
-    <!-- SECCIÓN CONTACTO / UBICACIÓN -->
-    <section id="contacto-section" style="display:none;">
-      <div class="contacto-card">
-        <div class="contacto-info">
-          <h3>Visítanos en Lerdo</h3>
-          <p><strong>📍 Ubicación:</strong> Centro de Ciudad Lerdo, Durango.</p>
-          <p><strong>📱 WhatsApp Mostrador:</strong> 871 523 8245</p>
-          <p><strong>🕒 Horario:</strong> Lunes a Sábado</p>
-          <div class="social-buttons" style="margin-top:20px;">
-            <a href="https://wa.me/528715238245" target="_blank" class="btn-social btn-whatsapp">Enviar WhatsApp</a>
+    <!-- SECCIÓN HORARIOS -->
+    <section id="horarios-section" style="display:none;">
+      <div class="seccion-card-completa">
+        <div class="info-texto" style="flex:1;">
+          <span class="hero-badge">🕒 Horarios de Atención en Mostrador</span>
+          <h2>¿A qué hora nos encontramos abiertos?</h2>
+          <p>Ven por tu material o herramienta en los siguientes horarios establecidos:</p>
+          
+          <div class="tabla-horarios">
+            <div class="fila-horario"><span>Lunes a Viernes:</span> <strong>9:00 AM – 6:00 PM</strong></div>
+            <div class="fila-horario"><span>Sábados:</span> <strong>9:00 AM – 3:00 PM</strong></div>
+            <div class="fila-horario"><span>Domingos:</span> <strong>9:00 AM – 2:00 PM</strong></div>
+          </div>
+
+          <div class="aviso-24-7">
+            💬 <em>"Cualquier duda o ayuda atendemos 24/7"</em>. Mándanos mensaje a cualquier hora y te responderemos con gusto en cuanto lo veamos.
           </div>
         </div>
       </div>
@@ -5919,7 +5953,7 @@
 
   <!-- BOTONES FLOTANTES INFERIORES -->
   <div class="botones-flotantes-izq">
-    <button id="btn-carrito-flotante" onclick="enviarCotizacionWhatsApp()"></button>
+    <button id="btn-carrito-flotante" onclick="abrirModalCotizador()" style="display:none;"></button>
     <button id="btn-favoritos-flotante" onclick="abrirModalFavoritos()" style="display:none;">
       ❤️ Mis Favoritos (<span id="contador-favoritos">0</span>)
     </button>
@@ -5932,24 +5966,31 @@
     <button class="btn-admin-discreto" id="btn-abrir-admin" title="Acceso Administración">🔒 Acceso Personal</button>
   </footer>
 
-  <!-- MODAL DE CUENTA DE CLIENTE -->
+  <!-- MODAL DE LISTA DE COTIZACIÓN -->
+  <div id="modal-cotizador" class="modal-overlay" style="display:none;">
+    <div class="modal-contenido" style="text-align:left; max-width:480px;">
+      <span class="cerrar" onclick="cerrarModalCotizador()">&times;</span>
+      <h2 style="font-size:1.35rem; margin-bottom:4px;">📋 Tu Lista de Cotización</h2>
+      <p style="font-size:0.85rem; color:var(--texto-suave); margin-bottom:12px;">
+        Revisa tus artículos. Puedes quitar alguno si lo agregaste por error antes de enviar tu comprobante formal en PDF.
+      </p>
+      <div id="lista-cotizador-modal" style="max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:15px;">
+        <!-- Se llena con JS -->
+      </div>
+      <button onclick="generarPDFCotizacion()" class="btn-social btn-whatsapp" style="width:100%; justify-content:center; border:none; cursor:pointer; padding:12px; font-size:1rem;">
+        📥 Descargar Cotización en PDF / Enviar
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL DE CLIENTE -->
   <div id="modal-cliente" class="modal-overlay" style="display:none;">
     <div class="modal-contenido" style="text-align:left;">
       <span class="cerrar" onclick="cerrarModalCliente()">&times;</span>
-      
       <div id="vista-auth-formulario">
         <span class="hero-badge" style="margin-bottom:8px;">⭐ Club Ferretería HR</span>
         <h2 id="auth-titulo" style="font-size:1.4rem; margin-bottom:6px;">Únete como cliente</h2>
-        <p style="font-size:0.9rem; color:#555; margin-bottom:14px;">
-          Crea una cuenta gratuita con tu correo y una <strong>contraseña nueva exclusiva para esta página</strong> (no uses tu contraseña de Gmail).
-        </p>
-
-        <ul class="lista-ventajas">
-          <li>❤️ Guarda tus productos favoritos para cotizar rápido</li>
-          <li>🏷️ Recibe avisos por correo de descuentos y promociones</li>
-          <li>🆕 Entérate primero cuando llegue mercancía nueva</li>
-        </ul>
-
+        <p style="font-size:0.9rem; color:var(--texto-suave); margin-bottom:14px;">Crea una cuenta gratuita con tu correo y una contraseña nueva.</p>
         <form id="form-cliente" onsubmit="procesarAuthCliente(event)">
           <div class="campo-form" id="grupo-nombre">
             <label>Tu nombre o apodo:</label>
@@ -5960,59 +6001,39 @@
             <input type="email" id="cliente-email" required placeholder="tucorreo@ejemplo.com">
           </div>
           <div class="campo-form">
-            <label>Crea una contraseña nueva (mín. 6 caracteres):</label>
+            <label>Contraseña nueva (mín. 6 caracteres):</label>
             <input type="password" id="cliente-pass" required minlength="6" placeholder="••••••">
           </div>
-          <div class="campo-form" style="display:flex; align-items:center; gap:8px; margin-top:10px;">
-            <input type="checkbox" id="cliente-notificaciones" checked style="width:auto;">
-            <label for="cliente-notificaciones" style="font-size:0.85rem; margin:0;">Recibir avisos de ofertas y productos nuevos por correo</label>
-          </div>
-
           <p id="auth-error" style="color:#d32f2f; font-size:0.85rem; margin-top:8px; display:none;"></p>
-
-          <button type="submit" id="btn-submit-auth" class="btn-cotizar-add" style="width:100%; margin-top:15px;">
-            Crear mi cuenta gratis
-          </button>
+          <button type="submit" id="btn-submit-auth" class="btn-cotizar-add" style="width:100%; margin-top:15px;">Crear mi cuenta gratis</button>
         </form>
-
         <p style="text-align:center; margin-top:14px; font-size:0.9rem;">
           <span id="texto-cambiar-modo">¿Ya tienes cuenta aquí?</span>
-          <a href="#" onclick="alternarModoAuth(event)" id="link-cambiar-modo" style="color:#b28704; font-weight:700;">Inicia sesión</a>
+          <a href="#" onclick="alternarModoAuth(event)" id="link-cambiar-modo" style="color:var(--amarillo-hover); font-weight:700;">Inicia sesión</a>
         </p>
       </div>
-
-      <!-- VISTA CUANDO YA INICIÓ SESIÓN -->
       <div id="vista-auth-perfil" style="display:none; text-align:center;">
         <h2 style="font-size:1.4rem; margin-bottom:8px;">👋 ¡Hola, <span id="perfil-nombre-usuario">Cliente</span>!</h2>
-        <p id="perfil-correo-usuario" style="color:#666; font-size:0.9rem; margin-bottom:15px;"></p>
-        <div style="background:#f4f6f8; padding:12px; border-radius:10px; margin-bottom:18px; font-size:0.9rem;">
-          ✅ Ya puedes tocar el corazón <strong>❤️</strong> en cualquier herramienta o material para guardarlo en <strong>Mis Favoritos</strong>.
-        </div>
-        <button onclick="cerrarSesionCliente()" class="btn-social" style="background:#333; width:100%; justify-content:center; border:none; cursor:pointer;">
-          Cerrar sesión
-        </button>
+        <p id="perfil-correo-usuario" style="color:var(--texto-suave); font-size:0.9rem; margin-bottom:15px;"></p>
+        <button onclick="cerrarSesionCliente()" class="btn-social" style="background:#333; width:100%; justify-content:center; border:none; cursor:pointer;">Cerrar sesión</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL DE MIS FAVORITOS -->
+  <!-- MODAL DE FAVORITOS -->
   <div id="modal-favoritos" class="modal-overlay" style="display:none;">
     <div class="modal-contenido" style="text-align:left; max-width:460px;">
       <span class="cerrar" onclick="cerrarModalFavoritos()">&times;</span>
       <h2 style="font-size:1.35rem; margin-bottom:6px;">❤️ Mis Favoritos</h2>
-      <p style="font-size:0.88rem; color:#666; margin-bottom:14px;">
-        Tus productos guardados. Puedes agregarlos directo a tu lista para cotizar.
-      </p>
-      <div id="lista-favoritos-modal" style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
-        <!-- Se llena automáticamente con JS -->
-      </div>
+      <div id="lista-favoritos-modal" style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;"></div>
     </div>
   </div>
 
-  <!-- LIBRERÍAS DE FIREBASE -->
+  <!-- FIREBASE Y SCRIPT -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
+   
