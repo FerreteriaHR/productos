@@ -41,7 +41,7 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* --- HEADER Y NAVEGACIÓN --- */
+/* --- HEADER Y NAVEGACIÓN (BOTONES ESTILO TARJETA) --- */
 .top-bar {
   background-color: var(--negro);
   color: var(--blanco);
@@ -90,24 +90,35 @@ body {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
+/* Transformamos los enlaces del menú en botones claros con contorno amarillo */
 nav a {
-  color: var(--blanco);
+  color: var(--texto);
+  background-color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 8px 12px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 8px 14px;
   border-radius: 8px;
+  border: 2px solid var(--amarillo);
   transition: all 0.2s ease;
   cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+body.modo-oscuro nav a {
+  color: #121212;
+  background-color: #f1f1f1;
+  border-color: var(--amarillo);
 }
 
 nav a:hover, nav a.activo {
   background-color: var(--amarillo);
   color: var(--negro);
+  transform: translateY(-2px);
 }
 
 .header-controles {
@@ -119,7 +130,7 @@ nav a:hover, nav a.activo {
 .btn-control-header {
   background-color: #333;
   color: var(--amarillo);
-  border: 1px solid var(--amarillo);
+  border: 2px solid var(--amarillo);
   padding: 8px 12px;
   border-radius: 50px;
   font-weight: 700;
@@ -248,7 +259,7 @@ body.modo-oscuro .hero-badge {
 .btn-facebook { background-color: #1877f2; }
 .btn-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 
-/* --- SECCIONES NUEVAS (UBICACIÓN Y HORARIOS) --- */
+/* --- SECCIONES (UBICACIÓN Y HORARIOS) --- */
 .seccion-card-completa {
   background: var(--blanco);
   border-radius: 16px;
@@ -322,7 +333,6 @@ body.modo-oscuro .mapa-falso-preview {
   color: #ddd;
 }
 
-/* Tabla Horarios */
 .tabla-horarios {
   display: flex;
   flex-direction: column;
@@ -391,9 +401,7 @@ body.modo-oscuro .aviso-24-7 {
   outline: none;
 }
 
-.buscador-box input:focus {
-  border-color: var(--amarillo);
-}
+.buscador-box input:focus { border-color: var(--amarillo); }
 
 .buscador-box span {
   position: absolute;
@@ -519,7 +527,7 @@ body.modo-oscuro .boton-categoria.activa {
   z-index: 5;
 }
 
-/* --- MODALES Y FLOTANTES --- */
+/* --- MODALES Y CORRECCIÓN DE TAMAÑO DE IMAGEN GIGANTE --- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -538,10 +546,22 @@ body.modo-oscuro .boton-categoria.activa {
   padding: 25px;
   border-radius: 18px;
   width: 100%;
-  max-width: 440px;
+  max-width: 420px;
   text-align: center;
   position: relative;
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+/* Limitamos la imagen del modal para que no se vea gigante */
+.modal-contenido img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 5px;
+  border: 1px solid var(--borde);
 }
 
 .modal-contenido .cerrar {
