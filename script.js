@@ -1,10 +1,6 @@
 // =========================================================
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// CONFIGURACIÓN DE FIREBASE (Puedes dejarlo así o poner tus llaves)
+// =========================================================
 const firebaseConfig = {
   apiKey: "AIzaSyBYdFpAvLpJspfe9WhugCbSqUDnFIjHRXc",
   authDomain: "ferreteria-hr.firebaseapp.com",
@@ -14,12 +10,12 @@ const firebaseConfig = {
   appId: "1:1091084861026:web:f9816ad4c8235c39245b3b"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// ========================================================
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+// Inicializar Firebase de forma segura (verifica si ya cargó la librería)
+if (typeof firebase !== 'undefined') {
+  firebase.initializeApp(firebaseConfig);
+  var auth = firebase.auth();
+  var db = firebase.firestore();
+}
 
 let listaCotizacion = [];
 let usuarioActual = null;
@@ -44,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
       prod.setAttribute("data-id", prodId);
 
       prod.innerHTML = `
-        <button class="btn-favorito" title="Guardar en favoritos" onclick="toggleFavorito(event, '${prodId}', '${nombreTexto.replace(/'/g, "\\'")}')">🤍</button>
+        <button class="btn-favorito" title="Guardar en favoritos" onclick="toggleFavorito(event, '${prodId}')">🤍</button>
         <div class="producto-img-wrap">
           <img src="${img.getAttribute("src")}" alt="${img.getAttribute("alt")}" loading="lazy">
         </div>
@@ -56,43 +52,56 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // 2. Control de sesión del cliente
-  auth.onAuthStateChanged(async (user) => {
-    usuarioActual = user;
-    const btnHeader = document.getElementById("btn-abrir-auth");
-    const btnFavFlotante = document.getElementById("btn-favoritos-flotante");
-    const botonesCorazon = document.querySelectorAll(".btn-favorito");
+  // 2. Control de sesión del cliente (solo si Firebase está activo)
+  if (typeof auth !== 'undefined') {
+    auth.onAuthStateChanged(async (user) => {
+      usuarioActual = user;
+      const btnHeader = document.getElementById("btn-abrir-auth");
+      const btnFavFlotante = document.getElementById("btn-favoritos-flotante");
+      const botonesCorazon = document.querySelectorAll(".btn-favorito");
 
-    if (user) {
-      const nombreMostrar = user.displayName || user.email.split("@")[0];
-      btnHeader.textContent = `👤 ${nombreMostrar}`;
-      btnHeader.classList.add("btn-cliente-logueado");
+      if (user) {
+        const nombreMostrar = user.displayName || user.email.split("@")[0];
+        if (btnHeader) {
+          btnHeader.textContent = `👤 ${nombreMostrar}`;
+          btnHeader.classList.add("btn-cliente-logueado");
+        }
 
-      document.getElementById("vista-auth-formulario").style.display = "none";
-      document.getElementById("vista-auth-perfil").style.display = "block";
-      document.getElementById("perfil-nombre-usuario").textContent = nombreMostrar;
-      document.getElementById("perfil-correo-usuario").textContent = user.email;
+        const vistaForm = document.getElementById("vista-auth-formulario");
+        const vistaPerfil = document.getElementById("vista-auth-perfil");
+        if (vistaForm) vistaForm.style.display = "none";
+        if (vistaPerfil) vistaPerfil.style.display = "block";
+        
+        const perfilNombre = document.getElementById("perfil-nombre-usuario");
+        const perfilCorreo = document.getElementById("perfil-correo-usuario");
+        if (perfilNombre) perfilNombre.textContent = nombreMostrar;
+        if (perfilCorreo) perfilCorreo.textContent = user.email;
 
-      if (btnFavFlotante) btnFavFlotante.style.display = "flex";
-      botonesCorazon.forEach((btn) => (btn.style.display = "flex"));
+        if (btnFavFlotante) btnFavFlotante.style.display = "flex";
+        botonesCorazon.forEach((btn) => (btn.style.display = "flex"));
 
-      await cargarFavoritosDeNube(user.uid);
-    } else {
-      favoritosUsuario = [];
-      btnHeader.textContent = "✨ Únete como cliente";
-      btnHeader.classList.remove("btn-cliente-logueado");
+        await cargarFavoritosDeNube(user.uid);
+      } else {
+        favoritosUsuario = [];
+        if (btnHeader) {
+          btnHeader.textContent = "✨ Únete como cliente";
+          btnHeader.classList.remove("btn-cliente-logueado");
+        }
 
-      document.getElementById("vista-auth-formulario").style.display = "block";
-      document.getElementById("vista-auth-perfil").style.display = "none";
+        const vistaForm = document.getElementById("vista-auth-formulario");
+        const vistaPerfil = document.getElementById("vista-auth-perfil");
+        if (vistaForm) vistaForm.style.display = "block";
+        if (vistaPerfil) vistaPerfil.style.display = "none";
 
-      if (btnFavFlotante) btnFavFlotante.style.display = "none";
-      botonesCorazon.forEach((btn) => {
-        btn.style.display = "none";
-        btn.textContent = "🤍";
-      });
-      actualizarCorazonesEnPantalla();
-    }
-  });
+        if (btnFavFlotante) btnFavFlotante.style.display = "none";
+        botonesCorazon.forEach((btn) => {
+          btn.style.display = "none";
+          btn.textContent = "🤍";
+        });
+        actualizarCorazonesEnPantalla();
+      }
+    });
+  }
 
   // 3. Modal de Producto Ampliado
   const modal = document.createElement("div");
@@ -127,28 +136,35 @@ document.addEventListener("DOMContentLoaded", function () {
       const nombre = producto.querySelector("p").textContent.trim();
       productoSeleccionadoActual = nombre;
 
-      modalImg.src = img.src;
-      modalNombre.textContent = nombre;
+      if (modalImg && img) modalImg.src = img.src;
+      if (modalNombre) modalNombre.textContent = nombre;
       const textoWa = encodeURIComponent(`Hola Ferretería HR, me interesa cotizar: *${nombre}*`);
-      modalWaDirecto.href = `https://wa.me/528715238245?text=${textoWa}`;
+      if (modalWaDirecto) modalWaDirecto.href = `https://wa.me/528715238245?text=${textoWa}`;
       modal.style.display = "flex";
     });
   });
 
-  btnAgregarLista.addEventListener("click", () => {
-    if (productoSeleccionadoActual) {
-      listaCotizacion.push(productoSeleccionadoActual);
-      actualizarBotonFlotante();
-      modal.style.display = "none";
-    }
-  });
+  if (btnAgregarLista) {
+    btnAgregarLista.addEventListener("click", () => {
+      if (productoSeleccionadoActual) {
+        listaCotizacion.push(productoSeleccionadoActual);
+        actualizarBotonFlotante();
+        modal.style.display = "none";
+      }
+    });
+  }
 
-  modal.querySelector(".cerrar").addEventListener("click", () => (modal.style.display = "none"));
+  const cerrarModalProd = modal.querySelector(".cerrar");
+  if (cerrarModalProd) {
+    cerrarModalProd.addEventListener("click", () => (modal.style.display = "none"));
+  }
 
   window.addEventListener("click", (e) => {
     if (e.target === modal) modal.style.display = "none";
-    if (e.target === document.getElementById("modal-cliente")) cerrarModalCliente();
-    if (e.target === document.getElementById("modal-favoritos")) cerrarModalFavoritos();
+    const modalCliente = document.getElementById("modal-cliente");
+    const modalFav = document.getElementById("modal-favoritos");
+    if (modalCliente && e.target === modalCliente) cerrarModalCliente();
+    if (modalFav && e.target === modalFav) cerrarModalFavoritos();
   });
 
   // 4. Categorías
@@ -189,51 +205,89 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // =========================================================
-// FUNCIONES DE CLIENTES Y FAVORITOS
+// FUNCIONES GLOBALES (Para que respondan los botones del HTML)
 // =========================================================
+function mostrarSeccion(seccion) {
+  const secInicio = document.getElementById("inicio");
+  const secProductos = document.getElementById("productos-section");
+  const secContacto = document.getElementById("contacto-section");
+
+  if (seccion === "inicio") {
+    if (secInicio) secInicio.style.display = "flex";
+    if (secProductos) secProductos.style.display = "block";
+    if (secContacto) secContacto.style.display = "none";
+  } else if (seccion === "productos") {
+    if (secInicio) secInicio.style.display = "none";
+    if (secProductos) {
+      secProductos.style.display = "block";
+      secProductos.scrollIntoView({ behavior: "smooth" });
+    }
+    if (secContacto) secContacto.style.display = "none";
+  } else if (seccion === "contacto") {
+    if (secInicio) secInicio.style.display = "none";
+    if (secProductos) secProductos.style.display = "none";
+    if (secContacto) secContacto.style.display = "block";
+  }
+}
+
 function abrirModalCliente() {
-  document.getElementById("modal-cliente").style.display = "flex";
+  const modal = document.getElementById("modal-cliente");
+  if (modal) modal.style.display = "flex";
 }
 
 function cerrarModalCliente() {
-  document.getElementById("modal-cliente").style.display = "none";
-  document.getElementById("auth-error").style.display = "none";
+  const modal = document.getElementById("modal-cliente");
+  const errBox = document.getElementById("auth-error");
+  if (modal) modal.style.display = "none";
+  if (errBox) errBox.style.display = "none";
 }
 
 function alternarModoAuth(e) {
   e.preventDefault();
   modoRegistro = !modoRegistro;
-  document.getElementById("auth-error").style.display = "none";
+  const errBox = document.getElementById("auth-error");
+  if (errBox) errBox.style.display = "none";
+
+  const titulo = document.getElementById("auth-titulo");
+  const grupoNom = document.getElementById("grupo-nombre");
+  const btnSub = document.getElementById("btn-submit-auth");
+  const txtModo = document.getElementById("texto-cambiar-modo");
+  const linkModo = document.getElementById("link-cambiar-modo");
 
   if (modoRegistro) {
-    document.getElementById("auth-titulo").textContent = "Únete como cliente";
-    document.getElementById("grupo-nombre").style.display = "block";
-    document.getElementById("btn-submit-auth").textContent = "Crear mi cuenta gratis";
-    document.getElementById("texto-cambiar-modo").textContent = "¿Ya tienes cuenta aquí?";
-    document.getElementById("link-cambiar-modo").textContent = "Inicia sesión";
+    if (titulo) titulo.textContent = "Únete como cliente";
+    if (grupoNom) grupoNom.style.display = "block";
+    if (btnSub) btnSub.textContent = "Crear mi cuenta gratis";
+    if (txtModo) txtModo.textContent = "¿Ya tienes cuenta aquí?";
+    if (linkModo) linkModo.textContent = "Inicia sesión";
   } else {
-    document.getElementById("auth-titulo").textContent = "Inicia sesión";
-    document.getElementById("grupo-nombre").style.display = "none";
-    document.getElementById("btn-submit-auth").textContent = "Entrar a mi cuenta";
-    document.getElementById("texto-cambiar-modo").textContent = "¿Aún no tienes cuenta?";
-    document.getElementById("link-cambiar-modo").textContent = "Regístrate gratis";
+    if (titulo) titulo.textContent = "Inicia sesión";
+    if (grupoNom) grupoNom.style.display = "none";
+    if (btnSub) btnSub.textContent = "Entrar a mi cuenta";
+    if (txtModo) txtModo.textContent = "¿Aún no tienes cuenta?";
+    if (linkModo) linkModo.textContent = "Regístrate gratis";
   }
 }
 
 async function procesarAuthCliente(e) {
   e.preventDefault();
+  if (typeof auth === 'undefined') {
+    alert("Firebase no está configurado todavía.");
+    return;
+  }
+
   const nombre = document.getElementById("cliente-nombre").value.trim();
   const email = document.getElementById("cliente-email").value.trim();
   const pass = document.getElementById("cliente-pass").value;
   const aceptaNotif = document.getElementById("cliente-notificaciones").checked;
   const errorBox = document.getElementById("auth-error");
 
-  errorBox.style.display = "none";
+  if (errorBox) errorBox.style.display = "none";
 
   try {
     if (modoRegistro) {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
-      if (nombre) {
+      if (nombre && cred.user) {
         await cred.user.updateProfile({ displayName: nombre });
       }
       await db.collection("clientes").doc(cred.user.uid).set({
@@ -248,21 +302,23 @@ async function procesarAuthCliente(e) {
     }
     cerrarModalCliente();
   } catch (err) {
-    errorBox.style.display = "block";
-    if (err.code === "auth/email-already-in-use") {
-      errorBox.textContent = "Este correo ya está registrado. Inicia sesión.";
-    } else if (err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
-      errorBox.textContent = "Correo o contraseña incorrectos.";
-    } else if (err.code === "auth/weak-password") {
-      errorBox.textContent = "La contraseña debe tener al menos 6 caracteres.";
-    } else {
-      errorBox.textContent = "Error: " + err.message;
+    if (errorBox) {
+      errorBox.style.display = "block";
+      if (err.code === "auth/email-already-in-use") {
+        errorBox.textContent = "Este correo ya está registrado. Inicia sesión.";
+      } else if (err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
+        errorBox.textContent = "Correo o contraseña incorrectos.";
+      } else if (err.code === "auth/weak-password") {
+        errorBox.textContent = "La contraseña debe tener al menos 6 caracteres.";
+      } else {
+        errorBox.textContent = "Error: " + err.message;
+      }
     }
   }
 }
 
 function cerrarSesionCliente() {
-  auth.signOut();
+  if (typeof auth !== 'undefined') auth.signOut();
   cerrarModalCliente();
 }
 
@@ -293,9 +349,13 @@ function actualizarCorazonesEnPantalla() {
   }
 }
 
-async function toggleFavorito(e, prodId, nombreProd) {
+async function toggleFavorito(e, prodId) {
   e.stopPropagation();
-  if (!usuarioActual) return;
+  if (!usuarioActual) {
+    alert("Inicia sesión como cliente para guardar favoritos.");
+    abrirModalCliente();
+    return;
+  }
 
   const index = favoritosUsuario.indexOf(prodId);
   if (index > -1) {
@@ -315,6 +375,7 @@ async function toggleFavorito(e, prodId, nombreProd) {
 function abrirModalFavoritos() {
   const modalFav = document.getElementById("modal-favoritos");
   const contenedor = document.getElementById("lista-favoritos-modal");
+  if (!contenedor) return;
   contenedor.innerHTML = "";
 
   if (favoritosUsuario.length === 0) {
@@ -338,11 +399,12 @@ function abrirModalFavoritos() {
     });
   }
 
-  modalFav.style.display = "flex";
+  if (modalFav) modalFav.style.display = "flex";
 }
 
 function cerrarModalFavoritos() {
-  document.getElementById("modal-favoritos").style.display = "none";
+  const modalFav = document.getElementById("modal-favoritos");
+  if (modalFav) modalFav.style.display = "none";
 }
 
 function agregarFavoritoACotizacion(nombre) {
@@ -363,30 +425,6 @@ async function quitarFavoritoDesdeModal(prodId) {
         { merge: true }
       );
     }
-  }
-}
-
-// =========================================================
-// NAVEGACIÓN Y COTIZADOR
-// =========================================================
-function mostrarSeccion(seccion) {
-  const secInicio = document.getElementById("inicio");
-  const secProductos = document.getElementById("productos-section");
-  const secContacto = document.getElementById("contacto-section");
-
-  if (seccion === "inicio") {
-    secInicio.style.display = "flex";
-    secProductos.style.display = "block";
-    if (secContacto) secContacto.style.display = "none";
-  } else if (seccion === "productos") {
-    secInicio.style.display = "none";
-    secProductos.style.display = "block";
-    if (secContacto) secContacto.style.display = "none";
-    secProductos.scrollIntoView({ behavior: "smooth" });
-  } else if (seccion === "contacto") {
-    secInicio.style.display = "none";
-    secProductos.style.display = "none";
-    if (secContacto) secContacto.style.display = "block";
   }
 }
 
