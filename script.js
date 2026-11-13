@@ -1,5 +1,21 @@
 // =========================================================
-npm install firebase
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBYdFpAvLpJspfe9WhugCbSqUDnFIjHRXc",
+  authDomain: "ferreteria-hr.firebaseapp.com",
+  projectId: "ferreteria-hr",
+  storageBucket: "ferreteria-hr.firebasestorage.app",
+  messagingSenderId: "1091084861026",
+  appId: "1:1091084861026:web:f9816ad4c8235c39245b3b"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 // =========================================================
 const firebaseConfig = {
   apiKey: "TU_API_KEY",
