@@ -30,6 +30,11 @@
           <li><a onclick="mostrarSeccion('contacto')">Ubicación</a></li>
         </ul>
       </nav>
+      <div id="zona-cliente">
+        <button id="btn-abrir-auth" class="btn-cliente-header" onclick="abrirModalCliente()">
+          ✨ Únete como cliente
+        </button>
+      </div>
     </div>
   </header>
 
@@ -5894,7 +5899,7 @@
 
 </div>
 
-</section>
+    </section>
 
     <!-- SECCIÓN CONTACTO / UBICACIÓN -->
     <section id="contacto-section" style="display:none;">
@@ -5912,7 +5917,14 @@
     </section>
   </main>
 
-  <button id="btn-carrito-flotante" onclick="enviarCotizacionWhatsApp()"></button>
+  <!-- BOTONES FLOTANTES INFERIORES -->
+  <div class="botones-flotantes-izq">
+    <button id="btn-carrito-flotante" onclick="enviarCotizacionWhatsApp()"></button>
+    <button id="btn-favoritos-flotante" onclick="abrirModalFavoritos()" style="display:none;">
+      ❤️ Mis Favoritos (<span id="contador-favoritos">0</span>)
+    </button>
+  </div>
+
   <button id="btnSubir" onclick="subirArriba()" title="Subir">⬆</button>
 
   <footer>
@@ -5920,6 +5932,87 @@
     <button class="btn-admin-discreto" id="btn-abrir-admin" title="Acceso Administración">🔒 Acceso Personal</button>
   </footer>
 
+  <!-- MODAL DE CUENTA DE CLIENTE -->
+  <div id="modal-cliente" class="modal-overlay" style="display:none;">
+    <div class="modal-contenido" style="text-align:left;">
+      <span class="cerrar" onclick="cerrarModalCliente()">&times;</span>
+      
+      <div id="vista-auth-formulario">
+        <span class="hero-badge" style="margin-bottom:8px;">⭐ Club Ferretería HR</span>
+        <h2 id="auth-titulo" style="font-size:1.4rem; margin-bottom:6px;">Únete como cliente</h2>
+        <p style="font-size:0.9rem; color:#555; margin-bottom:14px;">
+          Crea una cuenta gratuita con tu correo y una <strong>contraseña nueva exclusiva para esta página</strong> (no uses tu contraseña de Gmail).
+        </p>
+
+        <ul class="lista-ventajas">
+          <li>❤️ Guarda tus productos favoritos para cotizar rápido</li>
+          <li>🏷️ Recibe avisos por correo de descuentos y promociones</li>
+          <li>🆕 Entérate primero cuando llegue mercancía nueva</li>
+        </ul>
+
+        <form id="form-cliente" onsubmit="procesarAuthCliente(event)">
+          <div class="campo-form" id="grupo-nombre">
+            <label>Tu nombre o apodo:</label>
+            <input type="text" id="cliente-nombre" placeholder="Ej. Juan Pérez">
+          </div>
+          <div class="campo-form">
+            <label>Correo electrónico:</label>
+            <input type="email" id="cliente-email" required placeholder="tucorreo@ejemplo.com">
+          </div>
+          <div class="campo-form">
+            <label>Crea una contraseña nueva (mín. 6 caracteres):</label>
+            <input type="password" id="cliente-pass" required minlength="6" placeholder="••••••">
+          </div>
+          <div class="campo-form" style="display:flex; align-items:center; gap:8px; margin-top:10px;">
+            <input type="checkbox" id="cliente-notificaciones" checked style="width:auto;">
+            <label for="cliente-notificaciones" style="font-size:0.85rem; margin:0;">Recibir avisos de ofertas y productos nuevos por correo</label>
+          </div>
+
+          <p id="auth-error" style="color:#d32f2f; font-size:0.85rem; margin-top:8px; display:none;"></p>
+
+          <button type="submit" id="btn-submit-auth" class="btn-cotizar-add" style="width:100%; margin-top:15px;">
+            Crear mi cuenta gratis
+          </button>
+        </form>
+
+        <p style="text-align:center; margin-top:14px; font-size:0.9rem;">
+          <span id="texto-cambiar-modo">¿Ya tienes cuenta aquí?</span>
+          <a href="#" onclick="alternarModoAuth(event)" id="link-cambiar-modo" style="color:#b28704; font-weight:700;">Inicia sesión</a>
+        </p>
+      </div>
+
+      <!-- VISTA CUANDO YA INICIÓ SESIÓN -->
+      <div id="vista-auth-perfil" style="display:none; text-align:center;">
+        <h2 style="font-size:1.4rem; margin-bottom:8px;">👋 ¡Hola, <span id="perfil-nombre-usuario">Cliente</span>!</h2>
+        <p id="perfil-correo-usuario" style="color:#666; font-size:0.9rem; margin-bottom:15px;"></p>
+        <div style="background:#f4f6f8; padding:12px; border-radius:10px; margin-bottom:18px; font-size:0.9rem;">
+          ✅ Ya puedes tocar el corazón <strong>❤️</strong> en cualquier herramienta o material para guardarlo en <strong>Mis Favoritos</strong>.
+        </div>
+        <button onclick="cerrarSesionCliente()" class="btn-social" style="background:#333; width:100%; justify-content:center; border:none; cursor:pointer;">
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE MIS FAVORITOS -->
+  <div id="modal-favoritos" class="modal-overlay" style="display:none;">
+    <div class="modal-contenido" style="text-align:left; max-width:460px;">
+      <span class="cerrar" onclick="cerrarModalFavoritos()">&times;</span>
+      <h2 style="font-size:1.35rem; margin-bottom:6px;">❤️ Mis Favoritos</h2>
+      <p style="font-size:0.88rem; color:#666; margin-bottom:14px;">
+        Tus productos guardados. Puedes agregarlos directo a tu lista para cotizar.
+      </p>
+      <div id="lista-favoritos-modal" style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
+        <!-- Se llena automáticamente con JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- LIBRERÍAS DE FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
