@@ -1,92 +1,95 @@
-function buscarProducto() {
-  const input = document.getElementById("buscador").value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-
-  const productos = document.querySelectorAll(".producto");
-  const categorias = document.querySelectorAll(".categoria-titulo");
-
-  let hayCoincidencias = false;
-
-  productos.forEach((producto) => {
-    const textoProducto = producto.innerText
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-
-    if (textoProducto.includes(input)) {
-      producto.style.display = "block";
-      hayCoincidencias = true;
-    } else {
-      producto.style.display = input ? "none" : "block";
-    }
-  });
-
-  categorias.forEach((categoria) => {
-    categoria.style.display = input ? "none" : "block";
-  });
-}
+let listaCotizacion = [];
 
 document.addEventListener("DOMContentLoaded", function () {
   const productos = document.querySelectorAll(".producto");
+  const botonesCategoria = document.querySelectorAll(".boton-categoria");
+  const inputBuscador = document.getElementById("buscador");
+  const btnSubir = document.getElementById("btnSubir");
+
+  // 1. Estructurar visualmente cada tarjeta de producto automáticamente
+  productos.forEach((prod) => {
+    const img = prod.querySelector("img");
+    const nombre = prod.querySelector("p");
+    const cat = prod.getAttribute("data-categoria") || "";
+
+    if (img && nombre) {
+      prod.innerHTML = `
+        <div class="producto-img-wrap">
+          <img src="${img.getAttribute("src")}" alt="${img.getAttribute("alt")}" loading="lazy">
+        </div>
+        <div class="producto-info">
+          <span class="producto-tag">${cat}</span>
+          <p>${nombre.textContent}</p>
+        </div>
+      `;
+    }
+  });
+
+  // 2. Crear Modal de Producto Ampliado
   const modal = document.createElement("div");
   modal.id = "modal-producto";
-  modal.style.display = "none";
   modal.innerHTML = `
     <div class="modal-contenido">
       <span class="cerrar">&times;</span>
       <img src="" alt="Producto ampliado" id="modal-imagen" />
-      <h2 id="modal-nombre"></h2>
-      <p>Para más información de este artículo, mande mensaje por WhatsApp.</p>
-      <a href="https://wa.me/528715820989" class="btn-whatsapp" target="_blank">Contactar por WhatsApp</a>
+      <h2 id="modal-nombre" style="margin-bottom:8px; font-size:1.3rem;"></h2>
+      <p style="color:#666; font-size:0.95rem;">Consulta disponibilidad y precio al momento por WhatsApp o agrégalo a tu lista.</p>
+      <div class="modal-acciones">
+        <button id="btn-agregar-lista" class="btn-cotizar-add">+ Agregar a mi lista de cotización</button>
+        <a id="modal-wa-directo" href="#" class="btn-social btn-whatsapp" style="justify-content:center;" target="_blank">Preguntar solo por este artículo</a>
+      </div>
     </div>
   `;
   document.body.appendChild(modal);
 
-  const cerrarBtn = modal.querySelector(".cerrar");
-  const modalImg = modal.querySelector("#modal-imagen");
-  const modalNombre = modal.querySelector("#modal-nombre");
+  const modalImg = document.getElementById("modal-imagen");
+  const modalNombre = document.getElementById("modal-nombre");
+  const modalWaDirecto = document.getElementById("modal-wa-directo");
+  const btnAgregarLista = document.getElementById("btn-agregar-lista");
+  let productoSeleccionadoActual = "";
 
-  productos.forEach(producto => {
+  productos.forEach((producto) => {
     producto.addEventListener("click", () => {
       const img = producto.querySelector("img");
-      const nombre = producto.querySelector("p");
+      const nombre = producto.querySelector("p").textContent.trim();
+      productoSeleccionadoActual = nombre;
 
       modalImg.src = img.src;
-      modalNombre.textContent = nombre.textContent;
+      modalNombre.textContent = nombre;
+      const textoWa = encodeURIComponent(`Hola Ferretería HR, me interesa cotizar: *${nombre}*`);
+      modalWaDirecto.href = `https://wa.me/528715238245?text=${textoWa}`;
       modal.style.display = "flex";
     });
   });
 
-  cerrarBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  window.addEventListener("click", e => {
-    if (e.target === modal) {
+  btnAgregarLista.addEventListener("click", () => {
+    if (productoSeleccionadoActual) {
+      listaCotizacion.push(productoSeleccionadoActual);
+      actualizarBotonFlotante();
       modal.style.display = "none";
     }
   });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
-  const productos = document.querySelectorAll(".producto");
-
-  // Ocultar todos los productos al cargar la página
-  productos.forEach(function (producto) {
-    producto.style.display = "none";
+  modal.querySelector(".cerrar").addEventListener("click", () => {
+    modal.style.display = "none";
   });
 
-  const botones = document.querySelectorAll(".boton-categoria");
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
 
-  botones.forEach(function (boton) {
+  // 3. Filtro por Categorías
+  botonesCategoria.forEach((boton) => {
     boton.addEventListener("click", function () {
-      const categoria = this.getAttribute("data-categoria");
+      botonesCategoria.forEach((b) => b.classList.remove("activa"));
+      this.classList.add("activa");
 
-      productos.forEach(function (producto) {
-        if (producto.getAttribute("data-categoria") === categoria) {
-          producto.style.display = "block";
+      const categoria = this.getAttribute("data-categoria");
+      if (inputBuscador) inputBuscador.value = "";
+
+      productos.forEach((producto) => {
+        if (categoria === "todos" || producto.getAttribute("data-categoria") === categoria) {
+          producto.style.display = "flex";
         } else {
           producto.style.display = "none";
         }
@@ -94,16 +97,79 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Ocultar productos al hacer clic en los botones de navegación
-  const secciones = document.querySelectorAll("nav a");
+  // 4. Buscador en tiempo real
+  if (inputBuscador) {
+    inputBuscador.addEventListener("input", function () {
+      const texto = this.value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
 
-  secciones.forEach(function (enlace) {
-    enlace.addEventListener("click", function () {
-      productos.forEach(function (producto) {
-        producto.style.display = "none";
+      botonesCategoria.forEach((b) => b.classList.remove("activa"));
+
+      productos.forEach((producto) => {
+        const nombreProd = producto.innerText
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+
+        producto.style.display = nombreProd.includes(texto) ? "flex" : "none";
       });
     });
+  }
+
+  // 5. Botón subir
+  window.addEventListener("scroll", () => {
+    if (btnSubir) {
+      btnSubir.style.display = window.scrollY > 300 ? "block" : "none";
+    }
   });
 });
 
-document.querySelector('.productos').style.justifyContent = 'center';
+function mostrarSeccion(seccion) {
+  const secInicio = document.getElementById("inicio");
+  const secProductos = document.getElementById("productos-section");
+  const secContacto = document.getElementById("contacto-section");
+
+  document.querySelectorAll("nav a").forEach((a) => a.classList.remove("activo"));
+
+  if (seccion === "inicio") {
+    secInicio.style.display = "flex";
+    secProductos.style.display = "block";
+    if (secContacto) secContacto.style.display = "none";
+  } else if (seccion === "productos") {
+    secInicio.style.display = "none";
+    secProductos.style.display = "block";
+    if (secContacto) secContacto.style.display = "none";
+    secProductos.scrollIntoView({ behavior: "smooth" });
+  } else if (seccion === "contacto") {
+    secInicio.style.display = "none";
+    secProductos.style.display = "none";
+    if (secContacto) secContacto.style.display = "block";
+  }
+}
+
+function actualizarBotonFlotante() {
+  const btn = document.getElementById("btn-carrito-flotante");
+  if (!btn) return;
+  if (listaCotizacion.length > 0) {
+    btn.style.display = "flex";
+    btn.innerHTML = `📋 Cotizar lista (${listaCotizacion.length})`;
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+function enviarCotizacionWhatsApp() {
+  if (listaCotizacion.length === 0) return;
+  const itemsTexto = listaCotizacion.map((item, i) => `${i + 1}. ${item}`).join("\n");
+  const mensaje = encodeURIComponent(
+    `Hola Ferretería HR, me gustaría cotizar los siguientes artículos:\n\n${itemsTexto}`
+  );
+  window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
+}
+
+function subirArriba() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
