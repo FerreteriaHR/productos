@@ -45,6 +45,7 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .brand {
@@ -64,7 +65,6 @@ body {
 .brand h1 {
   font-size: clamp(1.3rem, 4vw, 1.9rem);
   font-weight: 900;
-  letter-spacing: 0.5px;
   color: var(--blanco);
 }
 
@@ -138,7 +138,6 @@ nav a:hover, nav a.activo {
   font-weight: 800;
   color: var(--negro);
   margin-bottom: 12px;
-  line-height: 1.2;
 }
 
 .hero-text p {
@@ -242,7 +241,6 @@ nav a:hover, nav a.activo {
   border-radius: 50px;
   background-color: var(--blanco);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .buscador-box input:focus {
@@ -255,7 +253,6 @@ nav a:hover, nav a.activo {
   right: 16px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.1rem;
   pointer-events: none;
 }
 
@@ -267,15 +264,6 @@ nav a:hover, nav a.activo {
   padding-bottom: 12px;
   margin-bottom: 20px;
   scrollbar-width: thin;
-}
-
-.categorias-wrapper::-webkit-scrollbar {
-  height: 6px;
-}
-
-.categorias-wrapper::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 10px;
 }
 
 .boton-categoria {
@@ -319,6 +307,7 @@ nav a:hover, nav a.activo {
   justify-content: space-between;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .producto:hover {
@@ -367,15 +356,36 @@ nav a:hover, nav a.activo {
   line-height: 1.3;
 }
 
+/* --- BOTÓN DE FAVORITO EN CADA TARJETA --- */
+.btn-favorito {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  z-index: 5;
+  transition: transform 0.15s;
+}
+
+.btn-favorito:hover {
+  transform: scale(1.15);
+}
+
 /* --- CONTACTO --- */
 .contacto-card {
   background: var(--blanco);
   border-radius: 16px;
   padding: 30px;
   box-shadow: var(--sombra);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
 }
 
 .contacto-info h3 {
@@ -388,20 +398,19 @@ nav a:hover, nav a.activo {
 .contacto-info p {
   margin-bottom: 12px;
   font-size: 1rem;
-  color: var(--texto);
 }
 
-/* --- MODAL PRODUCTO --- */
-#modal-producto {
+/* --- MODALES --- */
+.modal-overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(3px);
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
   padding: 15px;
-  z-index: 1000;
+  z-index: 1100;
 }
 
 .modal-contenido {
@@ -413,12 +422,6 @@ nav a:hover, nav a.activo {
   text-align: center;
   position: relative;
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-  animation: popIn 0.25s ease;
-}
-
-@keyframes popIn {
-  from { transform: scale(0.92); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
 }
 
 .modal-contenido img {
@@ -427,7 +430,6 @@ nav a:hover, nav a.activo {
   object-fit: contain;
   margin-bottom: 15px;
   border-radius: 10px;
-  background: #fff;
 }
 
 .modal-contenido .cerrar {
@@ -458,24 +460,150 @@ nav a:hover, nav a.activo {
   cursor: pointer;
 }
 
-/* --- BOTÓN FLOTANTE COTIZADOR --- */
-#btn-carrito-flotante {
+/* --- BOTONES FLOTANTES INFERIORES --- */
+.botones-flotantes-izq {
   position: fixed;
   bottom: 20px;
   left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  z-index: 950;
+}
+
+#btn-carrito-flotante {
   background-color: #25d366;
   color: white;
   border: none;
   border-radius: 50px;
-  padding: 12px 20px;
+  padding: 12px 18px;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
   cursor: pointer;
   display: none;
   align-items: center;
   gap: 8px;
-  z-index: 950;
+}
+
+#btn-favoritos-flotante {
+  background-color: var(--negro);
+  color: var(--blanco);
+  border: 2px solid var(--amarillo);
+  border-radius: 50px;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+
+.item-fav-modal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  gap: 10px;
+}
+
+.item-fav-modal span {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #222;
+}
+
+.item-fav-acciones {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.btn-mini-cotizar {
+  background: var(--amarillo);
+  color: var(--negro);
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-mini-quitar {
+  background: #ffebee;
+  color: #c62828;
+  border: none;
+  padding: 6px 9px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* --- CLIENTES HEADER --- */
+.btn-cliente-header {
+  background-color: var(--amarillo);
+  color: var(--negro);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-cliente-logueado {
+  background-color: #222;
+  color: var(--amarillo);
+  border: 1px solid var(--amarillo);
+}
+
+.lista-ventajas {
+  list-style: none;
+  background: #fffbeb;
+  border: 1px solid #ffe082;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 0.88rem;
+}
+
+.lista-ventajas li {
+  margin-bottom: 6px;
+}
+
+.campo-form {
+  margin-bottom: 12px;
+}
+
+.campo-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.campo-form input[type="text"],
+.campo-form input[type="email"],
+.campo-form input[type="password"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.campo-form input:focus {
+  border-color: var(--amarillo);
 }
 
 /* --- BOTÓN SUBIR --- */
@@ -518,17 +646,4 @@ footer {
 
 .btn-admin-discreto:hover {
   color: var(--amarillo);
-}
-
-@media (max-width: 600px) {
-  .productos-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .producto-img-wrap {
-    height: 140px;
-  }
-  .beneficios-grid {
-    grid-template-columns: 1fr;
-  }
 }
