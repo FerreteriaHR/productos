@@ -1,5 +1,5 @@
 // =========================================================
-// CONFIGURACIÓN DE FIREBASE (Puedes dejarlo así o poner tus llaves)
+// CONFIGURACIÓN FIREBASE
 // =========================================================
 const firebaseConfig = {
   apiKey: "AIzaSyBYdFpAvLpJspfe9WhugCbSqUDnFIjHRXc",
@@ -10,7 +10,6 @@ const firebaseConfig = {
   appId: "1:1091084861026:web:f9816ad4c8235c39245b3b"
 };
 
-// Inicializar Firebase de forma segura (verifica si ya cargó la librería)
 if (typeof firebase !== 'undefined') {
   firebase.initializeApp(firebaseConfig);
   var auth = firebase.auth();
@@ -28,7 +27,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputBuscador = document.getElementById("buscador");
   const btnSubir = document.getElementById("btnSubir");
 
-  // 1. Estructurar tarjetas con botón de favorito
+  // Cargar modo oscuro guardado previamente
+  if (localStorage.getItem("ferre_modo_oscuro") === "true") {
+    document.body.classList.add("modo-oscuro");
+    const btnOscuro = document.getElementById("btn-modo-oscuro");
+    if (btnOscuro) btnOscuro.textContent = "☀️ Modo Claro";
+  }
+
+  // 1. Estructurar tarjetas de productos
   productos.forEach((prod, index) => {
     const img = prod.querySelector("img");
     const nombre = prod.querySelector("p");
@@ -52,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // 2. Control de sesión del cliente (solo si Firebase está activo)
+  // 2. Auth listener
   if (typeof auth !== 'undefined') {
     auth.onAuthStateChanged(async (user) => {
       usuarioActual = user;
@@ -66,20 +72,13 @@ document.addEventListener("DOMContentLoaded", function () {
           btnHeader.textContent = `👤 ${nombreMostrar}`;
           btnHeader.classList.add("btn-cliente-logueado");
         }
-
-        const vistaForm = document.getElementById("vista-auth-formulario");
-        const vistaPerfil = document.getElementById("vista-auth-perfil");
-        if (vistaForm) vistaForm.style.display = "none";
-        if (vistaPerfil) vistaPerfil.style.display = "block";
-        
-        const perfilNombre = document.getElementById("perfil-nombre-usuario");
-        const perfilCorreo = document.getElementById("perfil-correo-usuario");
-        if (perfilNombre) perfilNombre.textContent = nombreMostrar;
-        if (perfilCorreo) perfilCorreo.textContent = user.email;
+        document.getElementById("vista-auth-formulario").style.display = "none";
+        document.getElementById("vista-auth-perfil").style.display = "block";
+        document.getElementById("perfil-nombre-usuario").textContent = nombreMostrar;
+        document.getElementById("perfil-correo-usuario").textContent = user.email;
 
         if (btnFavFlotante) btnFavFlotante.style.display = "flex";
         botonesCorazon.forEach((btn) => (btn.style.display = "flex"));
-
         await cargarFavoritosDeNube(user.uid);
       } else {
         favoritosUsuario = [];
@@ -87,12 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
           btnHeader.textContent = "✨ Únete como cliente";
           btnHeader.classList.remove("btn-cliente-logueado");
         }
-
-        const vistaForm = document.getElementById("vista-auth-formulario");
-        const vistaPerfil = document.getElementById("vista-auth-perfil");
-        if (vistaForm) vistaForm.style.display = "block";
-        if (vistaPerfil) vistaPerfil.style.display = "none";
-
+        document.getElementById("vista-auth-formulario").style.display = "block";
+        document.getElementById("vista-auth-perfil").style.display = "none";
         if (btnFavFlotante) btnFavFlotante.style.display = "none";
         botonesCorazon.forEach((btn) => {
           btn.style.display = "none";
@@ -113,10 +108,9 @@ document.addEventListener("DOMContentLoaded", function () {
       <span class="cerrar">&times;</span>
       <img src="" alt="Producto ampliado" id="modal-imagen" />
       <h2 id="modal-nombre" style="margin-bottom:8px; font-size:1.3rem;"></h2>
-      <p style="color:#666; font-size:0.95rem;">Consulta disponibilidad y precio al momento por WhatsApp o agrégalo a tu lista.</p>
+      <p style="color:var(--texto-suave); font-size:0.95rem;">Consulta disponibilidad al momento y agrégalo a tu cotización.</p>
       <div class="modal-acciones">
-        <button id="btn-agregar-lista" class="btn-cotizar-add">+ Agregar a mi lista de cotización</button>
-        <a id="modal-wa-directo" href="#" class="btn-social btn-whatsapp" style="justify-content:center;" target="_blank">Preguntar solo por este artículo</a>
+        <button id="btn-agregar-lista" class="btn-social btn-whatsapp" style="width:100%; justify-content:center; border:none; cursor:pointer; background:var(--negro); color:var(--amarillo);">+ Agregar a mi lista de cotización</button>
       </div>
     </div>
   `;
@@ -124,22 +118,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const modalImg = document.getElementById("modal-imagen");
   const modalNombre = document.getElementById("modal-nombre");
-  const modalWaDirecto = document.getElementById("modal-wa-directo");
   const btnAgregarLista = document.getElementById("btn-agregar-lista");
   let productoSeleccionadoActual = "";
 
   productos.forEach((producto) => {
     producto.addEventListener("click", (e) => {
       if (e.target.classList.contains("btn-favorito")) return;
-
       const img = producto.querySelector("img");
       const nombre = producto.querySelector("p").textContent.trim();
       productoSeleccionadoActual = nombre;
-
       if (modalImg && img) modalImg.src = img.src;
       if (modalNombre) modalNombre.textContent = nombre;
-      const textoWa = encodeURIComponent(`Hola Ferretería HR, me interesa cotizar: *${nombre}*`);
-      if (modalWaDirecto) modalWaDirecto.href = `https://wa.me/528715238245?text=${textoWa}`;
       modal.style.display = "flex";
     });
   });
@@ -148,23 +137,19 @@ document.addEventListener("DOMContentLoaded", function () {
     btnAgregarLista.addEventListener("click", () => {
       if (productoSeleccionadoActual) {
         listaCotizacion.push(productoSeleccionadoActual);
-        actualizarBotonFlotante();
+        actualizarBotonFlotanteCotizar();
         modal.style.display = "none";
       }
     });
   }
 
-  const cerrarModalProd = modal.querySelector(".cerrar");
-  if (cerrarModalProd) {
-    cerrarModalProd.addEventListener("click", () => (modal.style.display = "none"));
-  }
+  modal.querySelector(".cerrar").addEventListener("click", () => (modal.style.display = "none"));
 
   window.addEventListener("click", (e) => {
     if (e.target === modal) modal.style.display = "none";
-    const modalCliente = document.getElementById("modal-cliente");
-    const modalFav = document.getElementById("modal-favoritos");
-    if (modalCliente && e.target === modalCliente) cerrarModalCliente();
-    if (modalFav && e.target === modalFav) cerrarModalFavoritos();
+    if (e.target === document.getElementById("modal-cliente")) cerrarModalCliente();
+    if (e.target === document.getElementById("modal-favoritos")) cerrarModalFavoritos();
+    if (e.target === document.getElementById("modal-cotizador")) cerrarModalCotizador();
   });
 
   // 4. Categorías
@@ -172,16 +157,10 @@ document.addEventListener("DOMContentLoaded", function () {
     boton.addEventListener("click", function () {
       botonesCategoria.forEach((b) => b.classList.remove("activa"));
       this.classList.add("activa");
-
       const categoria = this.getAttribute("data-categoria");
       if (inputBuscador) inputBuscador.value = "";
-
       productos.forEach((producto) => {
-        if (categoria === "todos") {
-          producto.style.display = "flex";
-        } else {
-          producto.style.display = producto.getAttribute("data-categoria") === categoria ? "flex" : "none";
-        }
+        producto.style.display = (categoria === "todos" || producto.getAttribute("data-categoria") === categoria) ? "flex" : "none";
       });
     });
   });
@@ -191,7 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
     inputBuscador.addEventListener("input", function () {
       const texto = this.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
       botonesCategoria.forEach((b) => b.classList.remove("activa"));
-
       productos.forEach((producto) => {
         const nombreProd = producto.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         producto.style.display = nombreProd.includes(texto) ? "flex" : "none";
@@ -205,49 +183,188 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // =========================================================
-// FUNCIONES GLOBALES (Para que respondan los botones del HTML)
+// MODO OSCURO
+// =========================================================
+function alternarModoOscuro() {
+  document.body.classList.toggle("modo-oscuro");
+  const esOscuro = document.body.classList.contains("modo-oscuro");
+  localStorage.setItem("ferre_modo_oscuro", esOscuro);
+  const btnOscuro = document.getElementById("btn-modo-oscuro");
+  if (btnOscuro) {
+    btnOscuro.textContent = esOscuro ? "☀️ Modo Claro" : "🌙 Modo Oscuro";
+  }
+}
+
+// =========================================================
+// NAVEGACIÓN Y SECCIONES
 // =========================================================
 function mostrarSeccion(seccion) {
   const secInicio = document.getElementById("inicio");
   const secProductos = document.getElementById("productos-section");
-  const secContacto = document.getElementById("contacto-section");
+  const secUbicacion = document.getElementById("ubicacion-section");
+  const secHorarios = document.getElementById("horarios-section");
+
+  document.querySelectorAll("nav a").forEach(a => a.classList.remove("activo"));
 
   if (seccion === "inicio") {
     if (secInicio) secInicio.style.display = "flex";
     if (secProductos) secProductos.style.display = "block";
-    if (secContacto) secContacto.style.display = "none";
+    if (secUbicacion) secUbicacion.style.display = "none";
+    if (secHorarios) secHorarios.style.display = "none";
   } else if (seccion === "productos") {
     if (secInicio) secInicio.style.display = "none";
     if (secProductos) {
       secProductos.style.display = "block";
       secProductos.scrollIntoView({ behavior: "smooth" });
     }
-    if (secContacto) secContacto.style.display = "none";
-  } else if (seccion === "contacto") {
+    if (secUbicacion) secUbicacion.style.display = "none";
+    if (secHorarios) secHorarios.style.display = "none";
+  } else if (seccion === "ubicacion") {
     if (secInicio) secInicio.style.display = "none";
     if (secProductos) secProductos.style.display = "none";
-    if (secContacto) secContacto.style.display = "block";
+    if (secUbicacion) {
+      secUbicacion.style.display = "block";
+      secUbicacion.scrollIntoView({ behavior: "smooth" });
+    }
+    if (secHorarios) secHorarios.style.display = "none";
+  } else if (seccion === "horarios") {
+    if (secInicio) secInicio.style.display = "none";
+    if (secProductos) secProductos.style.display = "none";
+    if (secUbicacion) secUbicacion.style.display = "none";
+    if (secHorarios) {
+      secHorarios.style.display = "block";
+      secHorarios.scrollIntoView({ behavior: "smooth" });
+    }
   }
 }
 
+// =========================================================
+// COTIZADOR Y GENERADOR DE PDF PROFESIONAL
+// =========================================================
+function actualizarBotonFlotanteCotizar() {
+  const btn = document.getElementById("btn-carrito-flotante");
+  if (!btn) return;
+  if (listaCotizacion.length > 0) {
+    btn.style.display = "flex";
+    btn.innerHTML = `📋 Ver lista cotización (${listaCotizacion.length})`;
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+function abrirModalCotizador() {
+  const modal = document.getElementById("modal-cotizador");
+  const contenedor = document.getElementById("lista-cotizador-modal");
+  if (!contenedor) return;
+  contenedor.innerHTML = "";
+
+  if (listaCotizacion.length === 0) {
+    contenedor.innerHTML = `<p style="text-align:center; color:var(--texto-suave); padding:15px;">Tu lista está vacía.</p>`;
+  } else {
+    listaCotizacion.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "item-cotizador-modal";
+      div.innerHTML = `
+        <span>${index + 1}. ${item}</span>
+        <button class="btn-mini-quitar" onclick="eliminarItemCotizacion(${index})">Eliminar</button>
+      `;
+      contenedor.appendChild(div);
+    });
+  }
+  if (modal) modal.style.display = "flex";
+}
+
+function cerrarModalCotizador() {
+  const modal = document.getElementById("modal-cotizador");
+  if (modal) modal.style.display = "none";
+}
+
+function eliminarItemCotizacion(index) {
+  listaCotizacion.splice(index, 1);
+  actualizarBotonFlotanteCotizar();
+  abrirModalCotizador(); // Recarga la lista del modal
+}
+
+function generarPDFCotizacion() {
+  if (listaCotizacion.length === 0) return;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const fechaActual = new Date().toLocaleDateString();
+  const horaActual = new Date().toLocaleTimeString();
+  const nombreCliente = usuarioActual ? (usuarioActual.displayName || usuarioActual.email) : "Cliente Mostrador / General";
+
+  // Encabezado
+  doc.setFillColor(18, 18, 18);
+  doc.rect(0, 0, 210, 35, "F");
+
+  doc.setTextColor(255, 193, 7);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(22);
+  doc.text("FERRETERÍA HR", 15, 22);
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(10);
+  doc.text("COMPROBANTE DE COTIZACIÓN", 140, 22);
+
+  // Datos generales
+  doc.setTextColor(40, 40, 40);
+  doc.setFontSize(11);
+  doc.text(`Fecha: ${fechaActual} - Hora: ${horaActual}`, 15, 48);
+  doc.text(`Cliente: ${nombreCliente}`, 15, 56);
+  doc.text(`Ubicación: Centro, Ciudad Lerdo, Durango`, 15, 64);
+
+  // Línea divisoria
+  doc.setDrawColor(200, 200, 200);
+  doc.line(15, 70, 195, 70);
+
+  // Tabla / Artículos
+  doc.setFont("helvetica", "bold");
+  doc.text("Cantidad / Artículo", 15, 80);
+
+  doc.setFont("helvetica", "normal");
+  let y = 90;
+  listaCotizacion.forEach((item, i) => {
+    if (y > 260) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(`${i + 1}.  ${item}`, 15, y);
+    y += 10;
+  });
+
+  // Nota de precios al pie
+  y += 10;
+  if (y > 250) { doc.addPage(); y = 40; }
+  doc.setFillColor(255, 248, 225);
+  doc.rect(15, y, 180, 20, "F");
+  doc.setTextColor(150, 110, 0);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.text("AVISO IMPORTANTE:", 20, y + 8);
+  doc.setFont("helvetica", "normal");
+  doc.text("Esta cotización cuenta con precios vigentes únicamente al día de hoy.", 20, y + 15);
+
+  // Descargar PDF
+  doc.save(`Cotizacion_Ferreteria_HR_${fechaActual.replace(/\//g, "-")}.pdf`);
+  cerrarModalCotizador();
+}
+
+// =========================================================
+// CLIENTES Y FAVORITOS
+// =========================================================
 function abrirModalCliente() {
   const modal = document.getElementById("modal-cliente");
   if (modal) modal.style.display = "flex";
 }
-
 function cerrarModalCliente() {
   const modal = document.getElementById("modal-cliente");
-  const errBox = document.getElementById("auth-error");
   if (modal) modal.style.display = "none";
-  if (errBox) errBox.style.display = "none";
 }
-
 function alternarModoAuth(e) {
   e.preventDefault();
   modoRegistro = !modoRegistro;
-  const errBox = document.getElementById("auth-error");
-  if (errBox) errBox.style.display = "none";
-
   const titulo = document.getElementById("auth-titulo");
   const grupoNom = document.getElementById("grupo-nombre");
   const btnSub = document.getElementById("btn-submit-auth");
@@ -271,29 +388,19 @@ function alternarModoAuth(e) {
 
 async function procesarAuthCliente(e) {
   e.preventDefault();
-  if (typeof auth === 'undefined') {
-    alert("Firebase no está configurado todavía.");
-    return;
-  }
-
+  if (typeof auth === 'undefined') { alert("Firebase pendiente de configurar."); return; }
   const nombre = document.getElementById("cliente-nombre").value.trim();
   const email = document.getElementById("cliente-email").value.trim();
   const pass = document.getElementById("cliente-pass").value;
-  const aceptaNotif = document.getElementById("cliente-notificaciones").checked;
   const errorBox = document.getElementById("auth-error");
-
-  if (errorBox) errorBox.style.display = "none";
 
   try {
     if (modoRegistro) {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
-      if (nombre && cred.user) {
-        await cred.user.updateProfile({ displayName: nombre });
-      }
+      if (nombre && cred.user) await cred.user.updateProfile({ displayName: nombre });
       await db.collection("clientes").doc(cred.user.uid).set({
         nombre: nombre || email.split("@")[0],
         email: email,
-        recibirPromociones: aceptaNotif,
         favoritos: [],
         fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
       });
@@ -304,15 +411,7 @@ async function procesarAuthCliente(e) {
   } catch (err) {
     if (errorBox) {
       errorBox.style.display = "block";
-      if (err.code === "auth/email-already-in-use") {
-        errorBox.textContent = "Este correo ya está registrado. Inicia sesión.";
-      } else if (err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
-        errorBox.textContent = "Correo o contraseña incorrectos.";
-      } else if (err.code === "auth/weak-password") {
-        errorBox.textContent = "La contraseña debe tener al menos 6 caracteres.";
-      } else {
-        errorBox.textContent = "Error: " + err.message;
-      }
+      errorBox.textContent = "Error: " + err.message;
     }
   }
 }
@@ -329,47 +428,32 @@ async function cargarFavoritosDeNube(uid) {
       favoritosUsuario = doc.data().favoritos;
       actualizarCorazonesEnPantalla();
     }
-  } catch (e) {
-    console.error("Error al cargar favoritos:", e);
-  }
+  } catch (e) { console.error(e); }
 }
 
 function actualizarCorazonesEnPantalla() {
   document.querySelectorAll(".producto").forEach((prod) => {
     const id = prod.getAttribute("data-id");
     const btn = prod.querySelector(".btn-favorito");
-    if (btn) {
-      btn.textContent = favoritosUsuario.includes(id) ? "❤️" : "🤍";
-    }
+    if (btn) btn.textContent = favoritosUsuario.includes(id) ? "❤️" : "🤍";
   });
-
   const contador = document.getElementById("contador-favoritos");
-  if (contador) {
-    contador.textContent = favoritosUsuario.length;
-  }
+  if (contador) contador.textContent = favoritosUsuario.length;
 }
 
 async function toggleFavorito(e, prodId) {
   e.stopPropagation();
   if (!usuarioActual) {
-    alert("Inicia sesión como cliente para guardar favoritos.");
+    alert("Inicia sesión para guardar favoritos.");
     abrirModalCliente();
     return;
   }
-
   const index = favoritosUsuario.indexOf(prodId);
-  if (index > -1) {
-    favoritosUsuario.splice(index, 1);
-  } else {
-    favoritosUsuario.push(prodId);
-  }
+  if (index > -1) favoritosUsuario.splice(index, 1);
+  else favoritosUsuario.push(prodId);
 
   actualizarCorazonesEnPantalla();
-
-  await db.collection("clientes").doc(usuarioActual.uid).set(
-    { favoritos: favoritosUsuario },
-    { merge: true }
-  );
+  await db.collection("clientes").doc(usuarioActual.uid).set({ favoritos: favoritosUsuario }, { merge: true });
 }
 
 function abrirModalFavoritos() {
@@ -379,7 +463,7 @@ function abrirModalFavoritos() {
   contenedor.innerHTML = "";
 
   if (favoritosUsuario.length === 0) {
-    contenedor.innerHTML = `<p style="text-align:center; color:#888; padding:20px 0;">Aún no tienes favoritos guardados. Toca el corazón 🤍 en cualquier producto.</p>`;
+    contenedor.innerHTML = `<p style="text-align:center; color:var(--texto-suave); padding:15px;">No tienes favoritos guardados.</p>`;
   } else {
     favoritosUsuario.forEach((prodId) => {
       const tarjeta = document.querySelector(`.producto[data-id="${prodId}"]`);
@@ -389,16 +473,12 @@ function abrirModalFavoritos() {
         itemDiv.className = "item-fav-modal";
         itemDiv.innerHTML = `
           <span>${nombre}</span>
-          <div class="item-fav-acciones">
-            <button class="btn-mini-cotizar" onclick="agregarFavoritoACotizacion('${nombre.replace(/'/g, "\\'")}')">+ Cotizar</button>
-            <button class="btn-mini-quitar" title="Quitar" onclick="quitarFavoritoDesdeModal('${prodId}')">✕</button>
-          </div>
+          <button class="btn-mini-quitar" onclick="quitarFavoritoDesdeModal('${prodId}')">Eliminar</button>
         `;
         contenedor.appendChild(itemDiv);
       }
     });
   }
-
   if (modalFav) modalFav.style.display = "flex";
 }
 
@@ -407,45 +487,14 @@ function cerrarModalFavoritos() {
   if (modalFav) modalFav.style.display = "none";
 }
 
-function agregarFavoritoACotizacion(nombre) {
-  listaCotizacion.push(nombre);
-  actualizarBotonFlotante();
-  cerrarModalFavoritos();
-}
-
 async function quitarFavoritoDesdeModal(prodId) {
   const index = favoritosUsuario.indexOf(prodId);
   if (index > -1) {
     favoritosUsuario.splice(index, 1);
     actualizarCorazonesEnPantalla();
     abrirModalFavoritos();
-    if (usuarioActual) {
-      await db.collection("clientes").doc(usuarioActual.uid).set(
-        { favoritos: favoritosUsuario },
-        { merge: true }
-      );
-    }
+    if (usuarioActual) await db.collection("clientes").doc(usuarioActual.uid).set({ favoritos: favoritosUsuario }, { merge: true });
   }
-}
-
-function actualizarBotonFlotante() {
-  const btn = document.getElementById("btn-carrito-flotante");
-  if (!btn) return;
-  if (listaCotizacion.length > 0) {
-    btn.style.display = "flex";
-    btn.innerHTML = `📋 Cotizar lista (${listaCotizacion.length})`;
-  } else {
-    btn.style.display = "none";
-  }
-}
-
-function enviarCotizacionWhatsApp() {
-  if (listaCotizacion.length === 0) return;
-  const itemsTexto = listaCotizacion.map((item, i) => `${i + 1}. ${item}`).join("\n");
-  const mensaje = encodeURIComponent(
-    `Hola Ferretería HR, me gustaría cotizar los siguientes artículos:\n\n${itemsTexto}`
-  );
-  window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
 }
 
 function subirArriba() {
