@@ -69,18 +69,21 @@ body {
   gap: 10px;
 }
 
+/* Corrección de imagen del logo para que no se recorte */
 .brand img {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  object-fit: cover;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: contain;
+  background-color: #fff;
+  padding: 2px;
   border: 2px solid var(--amarillo);
 }
 
 .brand h1 {
   font-size: clamp(1.2rem, 3.5vw, 1.7rem);
   font-weight: 900;
-  color: var(--blanco);
+  color: #ffffff !important; /* Forzamos color blanco para que se vea bien en modo oscuro */
 }
 
 .brand span {
@@ -249,7 +252,7 @@ body.modo-oscuro .hero-badge {
 .btn-facebook { background-color: #1877f2; }
 .btn-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 
-/* --- SECCIONES (UBICACIÓN Y HORARIOS CON MAPA REAL) --- */
+/* --- SECCIONES (UBICACIÓN Y HORARIOS) --- */
 .seccion-card-completa {
   background: var(--blanco);
   border-radius: 16px;
@@ -419,13 +422,13 @@ body.modo-oscuro .boton-categoria.activa {
 /* --- GRID PRODUCTOS (2 EN CELULAR, 4 EN LAPTOP) --- */
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 en celular por defecto */
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
 @media (min-width: 768px) {
   .productos-grid {
-    grid-template-columns: repeat(4, 1fr); /* 4 en laptop */
+    grid-template-columns: repeat(4, 1fr);
     gap: 18px;
   }
 }
@@ -492,7 +495,6 @@ body.modo-oscuro .boton-categoria.activa {
   }
 }
 
-/* BOTÓN FAVORITO CORREGIDO PARA MODO OSCURO */
 .btn-favorito {
   position: absolute;
   top: 8px;
@@ -582,18 +584,20 @@ body.modo-oscuro .boton-categoria.activa {
   gap: 6px;
 }
 
+/* Botón de favoritos inferior mejorado y visible en modo oscuro */
 #btn-favoritos-flotante {
-  background-color: var(--negro);
-  color: var(--blanco);
-  border: 2px solid var(--amarillo);
+  background-color: var(--amarillo) !important;
+  color: #121212 !important;
+  border: 2px solid var(--negro);
   border-radius: 50px;
   padding: 8px 14px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.85rem;
   cursor: pointer;
   display: none;
   align-items: center;
   gap: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
 .item-cotizador-modal, .item-fav-modal {
