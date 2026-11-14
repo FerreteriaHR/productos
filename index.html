@@ -14,8 +14,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ferretería HR | Catálogo en Línea</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Librería jsPDF para generar el comprobante profesional en PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -46,7 +44,7 @@
       <div class="hero-text">
         <span class="hero-badge">📍 En el corazón de Lerdo, Durango</span>
         <h2>Todo lo que necesitas, en un solo lugar</h2>
-        <p>En <strong>Ferretería HR</strong> contamos con surtido completo para tus proyectos de hogar, construcción, plomería, electricidad y aire lavado.</p>
+        <p>Tu ferretería de confianza en Ciudad Lerdo. Surtido inmediato y la mejor asesoría experta para echar a andar tus proyectos de construcción, plomería y hogar.</p>
         
         <div class="beneficios-grid">
           <div class="beneficio-item">⚡ Atención rápida</div>
@@ -5920,11 +5918,17 @@
           </div>
         </div>
         <div class="mapa-contenedor">
-          <a href="https://maps.google.com/?q=Ferreteria+HR+Lerdo+Durango" target="_blank" title="Abrir en Google Maps">
-            <div class="mapa-falso-preview">
-              <span>📍 Clic aquí para abrir el mapa de la Ferretería</span>
-            </div>
-          </a>
+          <div class="mapa-marco-real">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3599.9!2d-103.528!3d25.542!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDMyJzMxLjIiTiAxMDPCsDMyJzQwLjgiVw!5e0!3m2!1ses!2smx!4v1600000000000!5m2!1ses!2smx" 
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
         </div>
       </div>
     </section>
@@ -5972,13 +5976,11 @@
       <span class="cerrar" onclick="cerrarModalCotizador()">&times;</span>
       <h2 style="font-size:1.35rem; margin-bottom:4px;">📋 Tu Lista de Cotización</h2>
       <p style="font-size:0.85rem; color:var(--texto-suave); margin-bottom:12px;">
-        Revisa tus artículos. Puedes quitar alguno si lo agregaste por error antes de enviar tu comprobante formal en PDF.
+        Revisa tus artículos. Puedes quitar alguno si lo agregaste por error antes de enviar tu mensaje formal por WhatsApp.
       </p>
-      <div id="lista-cotizador-modal" style="max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:15px;">
-        <!-- Se llena con JS -->
-      </div>
-      <button onclick="generarPDFCotizacion()" class="btn-social btn-whatsapp" style="width:100%; justify-content:center; border:none; cursor:pointer; padding:12px; font-size:1rem;">
-        📥 Descargar Cotización en PDF / Enviar
+      <div id="lista-cotizador-modal" style="max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:15px;"></div>
+      <button onclick="enviarCotizacionWhatsAppPro()" class="btn-social btn-whatsapp" style="width:100%; justify-content:center; border:none; cursor:pointer; padding:12px; font-size:1rem;">
+        💬 Enviar Cotización por WhatsApp
       </button>
     </div>
   </div>
@@ -5990,7 +5992,7 @@
       <div id="vista-auth-formulario">
         <span class="hero-badge" style="margin-bottom:8px;">⭐ Club Ferretería HR</span>
         <h2 id="auth-titulo" style="font-size:1.4rem; margin-bottom:6px;">Únete como cliente</h2>
-        <p style="font-size:0.9rem; color:var(--texto-suave); margin-bottom:14px;">Crea una cuenta gratuita con tu correo y una contraseña nueva.</p>
+        <p style="font-size:0.9rem; color:var(--texto-suave); margin-bottom:14px;">Crea una cuenta gratuita con tu correo y contraseña nueva.</p>
         <form id="form-cliente" onsubmit="procesarAuthCliente(event)">
           <div class="campo-form" id="grupo-nombre">
             <label>Tu nombre o apodo:</label>
@@ -6025,7 +6027,10 @@
     <div class="modal-contenido" style="text-align:left; max-width:460px;">
       <span class="cerrar" onclick="cerrarModalFavoritos()">&times;</span>
       <h2 style="font-size:1.35rem; margin-bottom:6px;">❤️ Mis Favoritos</h2>
-      <div id="lista-favoritos-modal" style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;"></div>
+      <div id="lista-favoritos-modal" style="max-height:260px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; margin-bottom:15px;"></div>
+      <button onclick="agregarTodosFavoritosACotizacion()" class="btn-social btn-whatsapp" style="width:100%; justify-content:center; border:none; cursor:pointer; padding:10px; font-size:0.95rem; background:var(--negro); color:var(--amarillo);">
+        + Agregar todos a lista de cotización
+      </button>
     </div>
   </div>
 
@@ -6036,4 +6041,4 @@
   <script src="script.js"></script>
 </body>
 </html>
-   
+    
