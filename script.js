@@ -165,15 +165,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 5. Buscador
+  // 5. BUSCADOR OPTIMIZADO (Solución al retraso al teclear)
   if (inputBuscador) {
+    let timeoutBuscador = null;
     inputBuscador.addEventListener("input", function () {
+      clearTimeout(timeoutBuscador);
       const texto = this.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-      botonesCategoria.forEach((b) => b.classList.remove("activa"));
-      productos.forEach((producto) => {
-        const nombreProd = producto.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        producto.style.display = nombreProd.includes(texto) ? "flex" : "none";
-      });
+      
+      timeoutBuscador = setTimeout(() => {
+        botonesCategoria.forEach((b) => b.classList.remove("activa"));
+        productos.forEach((producto) => {
+          const nombreProd = producto.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+          producto.style.display = nombreProd.includes(texto) ? "flex" : "none";
+        });
+      }, 150); // Retardo optimizado para fluidez instantánea
     });
   }
 
@@ -239,7 +244,7 @@ function mostrarSeccion(seccion) {
 }
 
 // =========================================================
-// COTIZADOR WHATSAPP PROFESIONAL (SIN PDF)
+// COTIZADOR WHATSAPP (Con emojis limpios y universales)
 // =========================================================
 function actualizarBotonFlotanteCotizar() {
   const btn = document.getElementById("btn-carrito-flotante");
@@ -292,15 +297,15 @@ function enviarCotizacionWhatsAppPro() {
   const horaActual = new Date().toLocaleTimeString();
   const nombreCliente = usuarioActual ? (usuarioActual.displayName || usuarioActual.email) : "Cliente Mostrador";
 
-  let textoItems = listaCotizacion.map((item, i) => `▫️ ${i + 1}. ${item}`).join("\n");
+  let textoItems = listaCotizacion.map((item, i) => `- ${i + 1}. ${item}`).join("\n");
 
   const mensaje = encodeURIComponent(
-    `🛠️ *FERRETERÍA HR - COTIZACIÓN* 🛠️\n\n` +
-    `📅 *Fecha:* ${fechaActual} - ${horaActual}\n` +
-    `👤 *Cliente:* ${nombreCliente}\n\n` +
-    `📋 *Artículos solicitados:*\n${textoItems}\n\n` +
-    `⚠️ *Nota:* Precios vigentes únicamente al día de hoy en mostrador.\n` +
-    `¡Quedo a la espera de su confirmación o disponibilidad!`
+    `FERRETERÍA HR - COTIZACIÓN\n\n` +
+    `Fecha: ${fechaActual} - ${horaActual}\n` +
+    `Cliente: ${nombreCliente}\n\n` +
+    `Artículos solicitados:\n${textoItems}\n\n` +
+    `Nota: Precios vigentes únicamente al día de hoy en mostrador.\n` +
+    `Quedo a la espera de su confirmación o disponibilidad.`
   );
 
   window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
@@ -308,7 +313,7 @@ function enviarCotizacionWhatsAppPro() {
 }
 
 // =========================================================
-// CLIENTES Y FAVORITOS
+// CLIENTES Y FAVORITOS (Errores traducidos al español)
 // =========================================================
 function abrirModalCliente() {
   const modal = document.getElementById("modal-cliente");
@@ -369,7 +374,6 @@ async function procesarAuthCliente(e) {
   } catch (err) {
     if (errorBox) {
       errorBox.style.display = "block";
-      // Traducción amigable de errores de Firebase al español
       let mensajeError = "Ocurrió un error al procesar tu cuenta.";
       if (err.code === "auth/email-already-in-use") {
         mensajeError = "Este correo ya está registrado. Intenta iniciar sesión.";
