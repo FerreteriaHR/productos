@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputBuscador = document.getElementById("buscador");
   const btnSubir = document.getElementById("btnSubir");
 
-  // Cargar modo oscuro guardado previamente
+  // Cargar modo oscuro guardado
   if (localStorage.getItem("ferre_modo_oscuro") === "true") {
     document.body.classList.add("modo-oscuro");
     const btnOscuro = document.getElementById("btn-modo-oscuro");
@@ -107,10 +107,10 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="modal-contenido">
       <span class="cerrar">&times;</span>
       <img src="" alt="Producto ampliado" id="modal-imagen" />
-      <h2 id="modal-nombre" style="margin-bottom:8px; font-size:1.3rem;"></h2>
-      <p style="color:var(--texto-suave); font-size:0.95rem;">Consulta disponibilidad al momento y agrégalo a tu cotización.</p>
+      <h2 id="modal-nombre" style="margin-bottom:8px; font-size:1.2rem;"></h2>
+      <p style="color:var(--texto-suave); font-size:0.9rem; margin-bottom:14px;">Consulta disponibilidad al momento y agrégalo a tu cotización.</p>
       <div class="modal-acciones">
-        <button id="btn-agregar-lista" class="btn-social btn-whatsapp" style="width:100%; justify-content:center; border:none; cursor:pointer; background:var(--negro); color:var(--amarillo);">+ Agregar a mi lista de cotización</button>
+        <button id="btn-agregar-lista" class="btn-social btn-whatsapp" style="width:100%; justify-content:center; border:none; cursor:pointer; background:var(--negro); color:var(--amarillo); padding:10px;">+ Agregar a mi lista de cotización</button>
       </div>
     </div>
   `;
@@ -239,7 +239,7 @@ function mostrarSeccion(seccion) {
 }
 
 // =========================================================
-// COTIZADOR Y GENERADOR DE PDF PROFESIONAL
+// COTIZADOR WHATSAPP PROFESIONAL (SIN PDF)
 // =========================================================
 function actualizarBotonFlotanteCotizar() {
   const btn = document.getElementById("btn-carrito-flotante");
@@ -282,72 +282,28 @@ function cerrarModalCotizador() {
 function eliminarItemCotizacion(index) {
   listaCotizacion.splice(index, 1);
   actualizarBotonFlotanteCotizar();
-  abrirModalCotizador(); // Recarga la lista del modal
+  abrirModalCotizador();
 }
 
-function generarPDFCotizacion() {
+function enviarCotizacionWhatsAppPro() {
   if (listaCotizacion.length === 0) return;
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
 
   const fechaActual = new Date().toLocaleDateString();
   const horaActual = new Date().toLocaleTimeString();
-  const nombreCliente = usuarioActual ? (usuarioActual.displayName || usuarioActual.email) : "Cliente Mostrador / General";
+  const nombreCliente = usuarioActual ? (usuarioActual.displayName || usuarioActual.email) : "Cliente Mostrador";
 
-  // Encabezado
-  doc.setFillColor(18, 18, 18);
-  doc.rect(0, 0, 210, 35, "F");
+  let textoItems = listaCotizacion.map((item, i) => `▫️ ${i + 1}. ${item}`).join("\n");
 
-  doc.setTextColor(255, 193, 7);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.text("FERRETERÍA HR", 15, 22);
+  const mensaje = encodeURIComponent(
+    `🛠️ *FERRETERÍA HR - COTIZACIÓN* 🛠️\n\n` +
+    `📅 *Fecha:* ${fechaActual} - ${horaActual}\n` +
+    `👤 *Cliente:* ${nombreCliente}\n\n` +
+    `📋 *Artículos solicitados:*\n${textoItems}\n\n` +
+    `⚠️ *Nota:* Precios vigentes únicamente al día de hoy en mostrador.\n` +
+    `¡Quedo a la espera de su confirmación o disponibilidad!`
+  );
 
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(10);
-  doc.text("COMPROBANTE DE COTIZACIÓN", 140, 22);
-
-  // Datos generales
-  doc.setTextColor(40, 40, 40);
-  doc.setFontSize(11);
-  doc.text(`Fecha: ${fechaActual} - Hora: ${horaActual}`, 15, 48);
-  doc.text(`Cliente: ${nombreCliente}`, 15, 56);
-  doc.text(`Ubicación: Centro, Ciudad Lerdo, Durango`, 15, 64);
-
-  // Línea divisoria
-  doc.setDrawColor(200, 200, 200);
-  doc.line(15, 70, 195, 70);
-
-  // Tabla / Artículos
-  doc.setFont("helvetica", "bold");
-  doc.text("Cantidad / Artículo", 15, 80);
-
-  doc.setFont("helvetica", "normal");
-  let y = 90;
-  listaCotizacion.forEach((item, i) => {
-    if (y > 260) {
-      doc.addPage();
-      y = 20;
-    }
-    doc.text(`${i + 1}.  ${item}`, 15, y);
-    y += 10;
-  });
-
-  // Nota de precios al pie
-  y += 10;
-  if (y > 250) { doc.addPage(); y = 40; }
-  doc.setFillColor(255, 248, 225);
-  doc.rect(15, y, 180, 20, "F");
-  doc.setTextColor(150, 110, 0);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
-  doc.text("AVISO IMPORTANTE:", 20, y + 8);
-  doc.setFont("helvetica", "normal");
-  doc.text("Esta cotización cuenta con precios vigentes únicamente al día de hoy.", 20, y + 15);
-
-  // Descargar PDF
-  doc.save(`Cotizacion_Ferreteria_HR_${fechaActual.replace(/\//g, "-")}.pdf`);
+  window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
   cerrarModalCotizador();
 }
 
@@ -394,6 +350,8 @@ async function procesarAuthCliente(e) {
   const pass = document.getElementById("cliente-pass").value;
   const errorBox = document.getElementById("auth-error");
 
+  if (errorBox) errorBox.style.display = "none";
+
   try {
     if (modoRegistro) {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
@@ -411,7 +369,18 @@ async function procesarAuthCliente(e) {
   } catch (err) {
     if (errorBox) {
       errorBox.style.display = "block";
-      errorBox.textContent = "Error: " + err.message;
+      // Traducción amigable de errores de Firebase al español
+      let mensajeError = "Ocurrió un error al procesar tu cuenta.";
+      if (err.code === "auth/email-already-in-use") {
+        mensajeError = "Este correo ya está registrado. Intenta iniciar sesión.";
+      } else if (err.code === "auth/wrong-password" || err.code === "auth/invalid-credential" || err.code === "auth/user-not-found") {
+        mensajeError = "Correo o contraseña incorrectos. Verifica tus datos.";
+      } else if (err.code === "auth/weak-password") {
+        mensajeError = "La contraseña debe tener al menos 6 caracteres.";
+      } else if (err.code === "auth/invalid-email") {
+        mensajeError = "El formato del correo electrónico no es válido.";
+      }
+      errorBox.textContent = mensajeError;
     }
   }
 }
@@ -495,6 +464,22 @@ async function quitarFavoritoDesdeModal(prodId) {
     abrirModalFavoritos();
     if (usuarioActual) await db.collection("clientes").doc(usuarioActual.uid).set({ favoritos: favoritosUsuario }, { merge: true });
   }
+}
+
+function agregarTodosFavoritosACotizacion() {
+  if (favoritosUsuario.length === 0) return;
+  favoritosUsuario.forEach((prodId) => {
+    const tarjeta = document.querySelector(`.producto[data-id="${prodId}"]`);
+    if (tarjeta) {
+      const nombre = tarjeta.querySelector("p").textContent.trim();
+      if (!listaCotizacion.includes(nombre)) {
+        listaCotizacion.push(nombre);
+      }
+    }
+  });
+  actualizarBotonFlotanteCotizar();
+  cerrarModalFavoritos();
+  abrirModalCotizador();
 }
 
 function subirArriba() {
