@@ -1,3 +1,4 @@
+
 :root {
   --amarillo: #ffc107;
   --amarillo-hover: #e0a800;
@@ -69,7 +70,6 @@ body {
   gap: 10px;
 }
 
-/* Corrección de imagen del logo para que no se recorte */
 .brand img {
   width: 48px;
   height: 48px;
@@ -83,7 +83,7 @@ body {
 .brand h1 {
   font-size: clamp(1.2rem, 3.5vw, 1.7rem);
   font-weight: 900;
-  color: #ffffff !important; /* Forzamos color blanco para que se vea bien en modo oscuro */
+  color: #ffffff !important;
 }
 
 .brand span {
@@ -419,7 +419,7 @@ body.modo-oscuro .boton-categoria.activa {
   color: var(--negro);
 }
 
-/* --- GRID PRODUCTOS (2 EN CELULAR, 4 EN LAPTOP) --- */
+/* --- GRID PRODUCTOS --- */
 .productos-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -539,9 +539,9 @@ body.modo-oscuro .boton-categoria.activa {
 
 .modal-contenido img {
   width: 100%;
-  max-height: 200px;
+  max-height: 180px;
   object-fit: contain;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   border-radius: 8px;
   background: #ffffff;
   padding: 4px;
@@ -574,9 +574,9 @@ body.modo-oscuro .boton-categoria.activa {
   color: white;
   border: none;
   border-radius: 50px;
-  padding: 10px 16px;
+  padding: 9px 14px;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
   cursor: pointer;
   display: none;
@@ -584,7 +584,21 @@ body.modo-oscuro .boton-categoria.activa {
   gap: 6px;
 }
 
-/* Botón de favoritos inferior mejorado y visible en modo oscuro */
+#btn-comprar-flotante {
+  background-color: #1b5e20;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 9px 14px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  box-shadow: 0 5px 15px rgba(27, 94, 32, 0.4);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+
 #btn-favoritos-flotante {
   background-color: var(--amarillo) !important;
   color: #121212 !important;
@@ -592,7 +606,7 @@ body.modo-oscuro .boton-categoria.activa {
   border-radius: 50px;
   padding: 8px 14px;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   cursor: pointer;
   display: none;
   align-items: center;
@@ -600,7 +614,7 @@ body.modo-oscuro .boton-categoria.activa {
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
-.item-cotizador-modal, .item-fav-modal {
+.item-cotizador-modal, .item-fav-modal, .item-carrito-modal {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -611,10 +625,11 @@ body.modo-oscuro .boton-categoria.activa {
   gap: 8px;
 }
 
-.item-cotizador-modal span, .item-fav-modal span {
+.item-cotizador-modal span, .item-fav-modal span, .item-carrito-modal span {
   font-weight: 700;
   font-size: 0.85rem;
   color: var(--texto);
+  text-align: left;
 }
 
 .btn-mini-quitar {
@@ -626,6 +641,19 @@ body.modo-oscuro .boton-categoria.activa {
   font-weight: 700;
   font-size: 0.75rem;
   cursor: pointer;
+  flex-shrink: 0;
+}
+
+.input-cantidad {
+  width: 55px;
+  padding: 4px;
+  text-align: center;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background: var(--blanco);
+  color: var(--texto);
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
 .btn-cliente-header {
