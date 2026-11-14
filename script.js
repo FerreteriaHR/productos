@@ -17,6 +17,7 @@ if (typeof firebase !== 'undefined') {
 }
 
 let listaCotizacion = [];
+let listaCompras = []; // Almacena objetos {nombre, cantidad}
 let usuarioActual = null;
 let favoritosUsuario = [];
 let modoRegistro = true;
@@ -64,6 +65,8 @@ document.addEventListener("DOMContentLoaded", function () {
       usuarioActual = user;
       const btnHeader = document.getElementById("btn-abrir-auth");
       const btnFavFlotante = document.getElementById("btn-favoritos-flotante");
+      const btnComprarFlotante = document.getElementById("btn-comprar-flotante");
+      const btnFavComprarTodos = document.getElementById("btn-fav-comprar-todos");
       const botonesCorazon = document.querySelectorAll(".btn-favorito");
 
       if (user) {
@@ -78,10 +81,14 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("perfil-correo-usuario").textContent = user.email;
 
         if (btnFavFlotante) btnFavFlotante.style.display = "flex";
+        if (btnFavComprarTodos) btnFavComprarTodos.style.display = "inline-flex";
+        actualizarBotonFlotanteCompra();
         botonesCorazon.forEach((btn) => (btn.style.display = "flex"));
         await cargarFavoritosDeNube(user.uid);
       } else {
         favoritosUsuario = [];
+        listaCompras = [];
+        actualizarBotonFlotanteCompra();
         if (btnHeader) {
           btnHeader.textContent = "✨ Únete como cliente";
           btnHeader.classList.remove("btn-cliente-logueado");
@@ -89,6 +96,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("vista-auth-formulario").style.display = "block";
         document.getElementById("vista-auth-perfil").style.display = "none";
         if (btnFavFlotante) btnFavFlotante.style.display = "none";
+        if (btnFavComprarTodos) btnFavComprarTodos.style.display = "none";
+        if (btnComprarFlotante) btnComprarFlotante.style.display = "none";
         botonesCorazon.forEach((btn) => {
           btn.style.display = "none";
           btn.textContent = "🤍";
@@ -98,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 3. Modal de Producto Ampliado
+  // 3. Modal de Producto Ampliado (Cotizar + Comprar si es cliente)
   const modal = document.createElement("div");
   modal.id = "modal-producto";
   modal.className = "modal-overlay";
@@ -107,10 +116,15 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="modal-contenido">
       <span class="cerrar">&times;</span>
       <img src="" alt="Producto ampliado" id="modal-imagen" />
-      <h2 id="modal-nombre" style="margin-bottom:8px; font-size:1.2rem;"></h2>
-      <p style="color:var(--texto-suave); font-size:0.9rem; margin-bottom:14px;">Consulta disponibilidad al momento y agrégalo a tu cotización.</p>
-      <div class="modal-acciones">
-        <button id="btn-agregar-lista" class="btn-social btn-whatsapp" style="width:100%; justify-content:center; border:none; cursor:pointer; background:var(--negro); color:var(--amarillo); padding:10px;">+ Agregar a mi lista de cotización</button>
+      <h2 id="modal-nombre" style="margin-bottom:6px; font-size:1.15rem;"></h2>
+      <p style="color:var(--texto-suave); font-size:0.85rem; margin-bottom:12px;">Elige una opción para tu artículo:</p>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button id="btn-agregar-cotizacion-modal" class="btn-social" style="width:100%; justify-content:center; border:none; cursor:pointer; background:var(--negro); color:var(--amarillo); padding:10px; font-size:0.9rem;">
+          📋 Agregar a lista de cotización
+        </button>
+        <button id="btn-agregar-compra-modal" class="btn-social" style="width:100%; justify-content:center; border:none; cursor:pointer; background:#1b5e20; color:#fff; padding:10px; font-size:0.9rem; display:none;">
+          🛒 Comprar / Apartar (Exclusivo Clientes)
+        </button>
       </div>
     </div>
   `;
@@ -118,7 +132,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const modalImg = document.getElementById("modal-imagen");
   const modalNombre = document.getElementById("modal-nombre");
-  const btnAgregarLista = document.getElementById("btn-agregar-lista");
+  const btnAgregarCotiz = document.getElementById("btn-agregar-cotizacion-modal");
+  const btnAgregarCompra = document.getElementById("btn-agregar-compra-modal");
   let productoSeleccionadoActual = "";
 
   productos.forEach((producto) => {
@@ -129,15 +144,38 @@ document.addEventListener("DOMContentLoaded", function () {
       productoSeleccionadoActual = nombre;
       if (modalImg && img) modalImg.src = img.src;
       if (modalNombre) modalNombre.textContent = nombre;
+
+      // Mostrar botón de compra solo si hay sesión iniciada
+      if (usuarioActual) {
+        if (btnAgregarCompra) btnAgregarCompra.style.display = "inline-flex";
+      } else {
+        if (btnAgregarCompra) btnAgregarCompra.style.display = "none";
+      }
+
       modal.style.display = "flex";
     });
   });
 
-  if (btnAgregarLista) {
-    btnAgregarLista.addEventListener("click", () => {
+  if (btnAgregarCotiz) {
+    btnAgregarCotiz.addEventListener("click", () => {
       if (productoSeleccionadoActual) {
         listaCotizacion.push(productoSeleccionadoActual);
         actualizarBotonFlotanteCotizar();
+        modal.style.display = "none";
+      }
+    });
+  }
+
+  if (btnAgregarCompra) {
+    btnAgregarCompra.addEventListener("click", () => {
+      if (productoSeleccionadoActual && usuarioActual) {
+        const existente = listaCompras.find(item => item.nombre === productoSeleccionadoActual);
+        if (existente) {
+          existente.cantidad += 1;
+        } else {
+          listaCompras.push({ nombre: productoSeleccionadoActual, cantidad: 1 });
+        }
+        actualizarBotonFlotanteCompra();
         modal.style.display = "none";
       }
     });
@@ -150,6 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.target === document.getElementById("modal-cliente")) cerrarModalCliente();
     if (e.target === document.getElementById("modal-favoritos")) cerrarModalFavoritos();
     if (e.target === document.getElementById("modal-cotizador")) cerrarModalCotizador();
+    if (e.target === document.getElementById("modal-carrito")) cerrarModalCarrito();
   });
 
   // 4. Categorías
@@ -165,20 +204,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 5. BUSCADOR OPTIMIZADO (Solución al retraso al teclear)
+  // 5. BUSCADOR INSTANTÁNEO ULTRARRÁPIDO
   if (inputBuscador) {
-    let timeoutBuscador = null;
     inputBuscador.addEventListener("input", function () {
-      clearTimeout(timeoutBuscador);
       const texto = this.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+      botonesCategoria.forEach((b) => b.classList.remove("activa"));
       
-      timeoutBuscador = setTimeout(() => {
-        botonesCategoria.forEach((b) => b.classList.remove("activa"));
-        productos.forEach((producto) => {
-          const nombreProd = producto.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-          producto.style.display = nombreProd.includes(texto) ? "flex" : "none";
-        });
-      }, 150); // Retardo optimizado para fluidez instantánea
+      productos.forEach((producto) => {
+        const nombreProd = producto.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        producto.style.display = nombreProd.includes(texto) ? "flex" : "none";
+      });
     });
   }
 
@@ -244,14 +279,14 @@ function mostrarSeccion(seccion) {
 }
 
 // =========================================================
-// COTIZADOR WHATSAPP (Con emojis limpios y universales)
+// COTIZADOR WHATSAPP
 // =========================================================
 function actualizarBotonFlotanteCotizar() {
   const btn = document.getElementById("btn-carrito-flotante");
   if (!btn) return;
   if (listaCotizacion.length > 0) {
     btn.style.display = "flex";
-    btn.innerHTML = `📋 Ver lista cotización (${listaCotizacion.length})`;
+    btn.innerHTML = `📋 Cotización (${listaCotizacion.length})`;
   } else {
     btn.style.display = "none";
   }
@@ -297,23 +332,118 @@ function enviarCotizacionWhatsAppPro() {
   const horaActual = new Date().toLocaleTimeString();
   const nombreCliente = usuarioActual ? (usuarioActual.displayName || usuarioActual.email) : "Cliente Mostrador";
 
-  let textoItems = listaCotizacion.map((item, i) => `- ${i + 1}. ${item}`).join("\n");
+  let textoItems = listaCotizacion.map((item, i) => `🔹 ${i + 1}. ${item}`).join("\n");
 
   const mensaje = encodeURIComponent(
-    `FERRETERÍA HR - COTIZACIÓN\n\n` +
-    `Fecha: ${fechaActual} - ${horaActual}\n` +
-    `Cliente: ${nombreCliente}\n\n` +
-    `Artículos solicitados:\n${textoItems}\n\n` +
-    `Nota: Precios vigentes únicamente al día de hoy en mostrador.\n` +
-    `Quedo a la espera de su confirmación o disponibilidad.`
+    `🛠️ *FERRETERÍA HR - COTIZACIÓN* 🛠️\n\n` +
+    `📅 *Fecha:* ${fechaActual} - ${horaActual}\n` +
+    `👤 *Cliente:* ${nombreCliente}\n\n` +
+    `📋 *Artículos solicitados:*\n${textoItems}\n\n` +
+    `⚠️ *Nota:* Precios vigentes únicamente al día de hoy en mostrador.\n` +
+    `✨ ¡Quedo a la espera de su confirmación o disponibilidad!`
   );
 
   window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
+  
+  // VACIAR LISTA A 0 AL ENVIAR
+  listaCotizacion = [];
+  actualizarBotonFlotanteCotizar();
   cerrarModalCotizador();
 }
 
 // =========================================================
-// CLIENTES Y FAVORITOS (Errores traducidos al español)
+// CARRITO DE COMPRAS / APARTAR EN MOSTRADOR (EXCLUSIVO CLIENTES)
+// =========================================================
+function actualizarBotonFlotanteCompra() {
+  const btn = document.getElementById("btn-comprar-flotante");
+  if (!btn || !usuarioActual) {
+    if (btn) btn.style.display = "none";
+    return;
+  }
+  const totalItems = listaCompras.reduce((sum, item) => sum + item.cantidad, 0);
+  if (totalItems > 0) {
+    btn.style.display = "flex";
+    btn.innerHTML = `🛒 Comprar (${totalItems})`;
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+function abrirModalCarrito() {
+  if (!usuarioActual) {
+    alert("Debes iniciar sesión como cliente para usar el carrito de compras.");
+    abrirModalCliente();
+    return;
+  }
+  const modal = document.getElementById("modal-carrito");
+  const contenedor = document.getElementById("lista-carrito-modal");
+  if (!contenedor) return;
+  contenedor.innerHTML = "";
+
+  if (listaCompras.length === 0) {
+    contenedor.innerHTML = `<p style="text-align:center; color:var(--texto-suave); padding:15px;">Tu carrito de compras está vacío.</p>`;
+  } else {
+    listaCompras.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "item-carrito-modal";
+      div.innerHTML = `
+        <span style="flex:1;">${index + 1}. ${item.nombre}</span>
+        <input type="number" min="1" value="${item.cantidad}" class="input-cantidad" onchange="actualizarCantidadCompra(${index}, this.value)">
+        <button class="btn-mini-quitar" onclick="eliminarItemCompra(${index})">Eliminar</button>
+      `;
+      contenedor.appendChild(div);
+    });
+  }
+  if (modal) modal.style.display = "flex";
+}
+
+function cerrarModalCarrito() {
+  const modal = document.getElementById("modal-carrito");
+  if (modal) modal.style.display = "none";
+}
+
+function actualizarCantidadCompra(index, nuevaCantidad) {
+  const cant = parseInt(nuevaCantidad);
+  if (cant > 0) {
+    listaCompras[index].cantidad = cant;
+    actualizarBotonFlotanteCompra();
+  }
+}
+
+function eliminarItemCompra(index) {
+  listaCompras.splice(index, 1);
+  actualizarBotonFlotanteCompra();
+  abrirModalCarrito();
+}
+
+function enviarCompraWhatsApp() {
+  if (listaCompras.length === 0 || !usuarioActual) return;
+
+  const fechaActual = new Date().toLocaleDateString();
+  const horaActual = new Date().toLocaleTimeString();
+  const nombreCliente = usuarioActual.displayName || usuarioActual.email;
+
+  let textoItems = listaCompras.map((item, i) => `🔹 ${i + 1}. ${item.nombre} (Cant: *${item.cantidad}*)`).join("\n");
+
+  const mensaje = encodeURIComponent(
+    `🛍️ *FERRETERÍA HR - NUEVA COMPRA / APARTADO* 🛍️\n\n` +
+    `📅 *Fecha:* ${fechaActual} - ${horaActual}\n` +
+    `👤 *Cliente:* ${nombreCliente}\n\n` +
+    `📦 *Material solicitado:*\n${textoItems}\n\n` +
+    `📍 *Aviso:* Realicé una compra y en un momento pasaré por el material a sucursal.\n` +
+    `💬 ¡Quedo pendiente de su confirmación con el total a pagar!`
+  );
+
+  window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
+  
+  // VACIAR CARRITO A 0 AL ENVIAR
+  listaCompras = [];
+  actualizarBotonFlotanteCompra();
+  cerrarModalCarrito();
+}
+
+// =========================================================
+// CLIENTES Y FAVORITOS
 // =========================================================
 function abrirModalCliente() {
   const modal = document.getElementById("modal-cliente");
@@ -484,6 +614,25 @@ function agregarTodosFavoritosACotizacion() {
   actualizarBotonFlotanteCotizar();
   cerrarModalFavoritos();
   abrirModalCotizador();
+}
+
+function agregarTodosFavoritosACompras() {
+  if (!usuarioActual || favoritosUsuario.length === 0) return;
+  favoritosUsuario.forEach((prodId) => {
+    const tarjeta = document.querySelector(`.producto[data-id="${prodId}"]`);
+    if (tarjeta) {
+      const nombre = tarjeta.querySelector("p").textContent.trim();
+      const existente = listaCompras.find(item => item.nombre === nombre);
+      if (existente) {
+        existente.cantidad += 1;
+      } else {
+        listaCompras.push({ nombre: nombre, cantidad: 1 });
+      }
+    }
+  });
+  actualizarBotonFlotanteCompra();
+  cerrarModalFavoritos();
+  abrirModalCarrito();
 }
 
 function subirArriba() {
