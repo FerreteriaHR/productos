@@ -17,7 +17,7 @@ if (typeof firebase !== 'undefined') {
 }
 
 let listaCotizacion = [];
-let listaCompras = []; // Almacena objetos {nombre, cantidad}
+let listaCompras = [];
 let usuarioActual = null;
 let favoritosUsuario = [];
 let modoRegistro = true;
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 3. Modal de Producto Ampliado (Cotizar + Comprar si es cliente)
+  // 3. Modal de Producto Ampliado
   const modal = document.createElement("div");
   modal.id = "modal-producto";
   modal.className = "modal-overlay";
@@ -145,7 +145,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (modalImg && img) modalImg.src = img.src;
       if (modalNombre) modalNombre.textContent = nombre;
 
-      // Mostrar botón de compra solo si hay sesión iniciada
       if (usuarioActual) {
         if (btnAgregarCompra) btnAgregarCompra.style.display = "inline-flex";
       } else {
@@ -345,14 +344,13 @@ function enviarCotizacionWhatsAppPro() {
 
   window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
   
-  // VACIAR LISTA A 0 AL ENVIAR
   listaCotizacion = [];
   actualizarBotonFlotanteCotizar();
   cerrarModalCotizador();
 }
 
 // =========================================================
-// CARRITO DE COMPRAS / APARTAR EN MOSTRADOR (EXCLUSIVO CLIENTES)
+// CARRITO DE COMPRAS / APARTAR EN MOSTRADOR
 // =========================================================
 function actualizarBotonFlotanteCompra() {
   const btn = document.getElementById("btn-comprar-flotante");
@@ -436,7 +434,6 @@ function enviarCompraWhatsApp() {
 
   window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
   
-  // VACIAR CARRITO A 0 AL ENVIAR
   listaCompras = [];
   actualizarBotonFlotanteCompra();
   cerrarModalCarrito();
