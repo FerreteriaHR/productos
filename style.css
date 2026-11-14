@@ -41,11 +41,11 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* --- HEADER Y NAVEGACIÓN (BOTONES ESTILO TARJETA) --- */
+/* --- HEADER Y NAVEGACIÓN --- */
 .top-bar {
   background-color: var(--negro);
   color: var(--blanco);
-  padding: 15px 20px;
+  padding: 12px 15px;
   border-bottom: 4px solid var(--amarillo);
   position: sticky;
   top: 0;
@@ -59,26 +59,26 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .brand img {
-  width: 52px;
-  height: 52px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
   object-fit: cover;
   border: 2px solid var(--amarillo);
 }
 
 .brand h1 {
-  font-size: clamp(1.3rem, 4vw, 1.9rem);
+  font-size: clamp(1.2rem, 3.5vw, 1.7rem);
   font-weight: 900;
   color: var(--blanco);
 }
@@ -90,23 +90,21 @@ body {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
-/* Transformamos los enlaces del menú en botones claros con contorno amarillo */
 nav a {
   color: var(--texto);
   background-color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-weight: 700;
-  font-size: 0.88rem;
-  padding: 8px 14px;
+  font-size: 0.82rem;
+  padding: 6px 10px;
   border-radius: 8px;
   border: 2px solid var(--amarillo);
   transition: all 0.2s ease;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 body.modo-oscuro nav a {
@@ -118,12 +116,11 @@ body.modo-oscuro nav a {
 nav a:hover, nav a.activo {
   background-color: var(--amarillo);
   color: var(--negro);
-  transform: translateY(-2px);
 }
 
 .header-controles {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
@@ -131,43 +128,38 @@ nav a:hover, nav a.activo {
   background-color: #333;
   color: var(--amarillo);
   border: 2px solid var(--amarillo);
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 50px;
   font-weight: 700;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.btn-control-header:hover {
-  transform: scale(1.05);
 }
 
 /* --- CONTENEDOR PRINCIPAL --- */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 25px 15px;
+  padding: 20px 12px;
 }
 
 /* --- HERO / INICIO --- */
 .hero-card {
   background: var(--blanco);
   border-radius: 16px;
-  padding: 30px;
+  padding: 24px;
   box-shadow: var(--sombra);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 30px;
-  margin-bottom: 30px;
+  gap: 20px;
+  margin-bottom: 25px;
   border-left: 6px solid var(--amarillo);
 }
 
 .hero-text {
   flex: 1;
-  min-width: 280px;
+  min-width: 260px;
 }
 
 .hero-badge {
@@ -175,10 +167,10 @@ nav a:hover, nav a.activo {
   background-color: #fff8e1;
   color: #b28704;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   padding: 5px 12px;
   border-radius: 50px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   border: 1px solid var(--amarillo);
 }
 
@@ -188,47 +180,47 @@ body.modo-oscuro .hero-badge {
 }
 
 .hero-text h2 {
-  font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
   font-weight: 800;
   color: var(--texto);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .hero-text p {
   color: var(--texto-suave);
-  font-size: 1.05rem;
-  margin-bottom: 20px;
+  font-size: 1rem;
+  margin-bottom: 16px;
 }
 
 .beneficios-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 25px;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .beneficio-item {
   background: var(--fondo);
   color: var(--texto);
-  padding: 10px 14px;
-  border-radius: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   border: 1px solid var(--borde);
 }
 
 .hero-img {
   flex-shrink: 0;
   width: 100%;
-  max-width: 340px;
+  max-width: 320px;
 }
 
 .hero-img img {
   width: 100%;
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: var(--sombra);
   object-fit: cover;
 }
@@ -237,125 +229,106 @@ body.modo-oscuro .hero-badge {
 .social-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .btn-social {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
+  gap: 6px;
+  padding: 8px 14px;
   border-radius: 50px;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #fff;
   text-decoration: none;
-  transition: transform 0.2s, opacity 0.2s;
   box-shadow: 0 3px 8px rgba(0,0,0,0.12);
 }
 
-.btn-social:hover { transform: translateY(-2px); opacity: 0.95; }
 .btn-whatsapp { background-color: #25d366; }
 .btn-facebook { background-color: #1877f2; }
 .btn-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 
-/* --- SECCIONES (UBICACIÓN Y HORARIOS) --- */
+/* --- SECCIONES (UBICACIÓN Y HORARIOS CON MAPA REAL) --- */
 .seccion-card-completa {
   background: var(--blanco);
   border-radius: 16px;
-  padding: 35px;
+  padding: 25px;
   box-shadow: var(--sombra);
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 25px;
   align-items: center;
   border-left: 6px solid var(--amarillo);
 }
 
 .info-texto {
   flex: 1;
-  min-width: 280px;
+  min-width: 260px;
 }
 
 .info-texto h2 {
-  font-size: 1.8rem;
-  margin-bottom: 12px;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
   color: var(--texto);
 }
 
 .info-texto p {
   color: var(--texto-suave);
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .detalles-contacto-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .detalle-box {
   background: var(--fondo);
-  padding: 12px 16px;
-  border-radius: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
   border: 1px solid var(--borde);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .mapa-contenedor {
   flex: 1;
-  min-width: 280px;
+  min-width: 260px;
 }
 
-.mapa-falso-preview {
+.mapa-marco-real {
   width: 100%;
-  height: 220px;
-  background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+  height: 250px;
   border-radius: 12px;
   border: 2px dashed var(--amarillo);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
-  font-weight: 700;
-  color: #444;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.mapa-falso-preview:hover {
-  transform: scale(1.02);
-}
-
-body.modo-oscuro .mapa-falso-preview {
-  background: linear-gradient(135deg, #222, #2a2a2a);
-  color: #ddd;
+  overflow: hidden;
+  box-shadow: var(--sombra);
 }
 
 .tabla-horarios {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
 .fila-horario {
   display: flex;
   justify-content: space-between;
   background: var(--fondo);
-  padding: 12px 16px;
-  border-radius: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
   border: 1px solid var(--borde);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .aviso-24-7 {
   background: #fff8e1;
   border: 1px solid var(--amarillo);
-  padding: 14px 18px;
-  border-radius: 12px;
-  font-size: 0.95rem;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
   color: #554100;
   font-weight: 600;
 }
@@ -371,12 +344,12 @@ body.modo-oscuro .aviso-24-7 {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 15px;
 }
 
 .catalogo-header h2 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 900;
   color: var(--texto);
   border-bottom: 4px solid var(--amarillo);
@@ -386,14 +359,14 @@ body.modo-oscuro .aviso-24-7 {
 .buscador-box {
   position: relative;
   flex: 1;
-  min-width: 260px;
-  max-width: 450px;
+  min-width: 240px;
+  max-width: 400px;
 }
 
 .buscador-box input {
   width: 100%;
-  padding: 12px 42px 12px 16px;
-  font-size: 1rem;
+  padding: 10px 40px 10px 14px;
+  font-size: 0.95rem;
   border: 2px solid var(--borde);
   border-radius: 50px;
   background-color: var(--blanco);
@@ -405,7 +378,7 @@ body.modo-oscuro .aviso-24-7 {
 
 .buscador-box span {
   position: absolute;
-  right: 16px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
@@ -413,10 +386,10 @@ body.modo-oscuro .aviso-24-7 {
 
 .categorias-wrapper {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
-  padding-bottom: 12px;
-  margin-bottom: 20px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
   scrollbar-width: thin;
 }
 
@@ -425,15 +398,13 @@ body.modo-oscuro .aviso-24-7 {
   color: var(--texto);
   border: 1px solid var(--borde);
   border-radius: 50px;
-  padding: 8px 16px;
-  font-size: 0.9rem;
+  padding: 6px 14px;
+  font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.boton-categoria:hover { border-color: var(--texto); }
 .boton-categoria.activa {
   background-color: var(--negro);
   color: var(--amarillo);
@@ -445,42 +416,48 @@ body.modo-oscuro .boton-categoria.activa {
   color: var(--negro);
 }
 
-/* --- GRID PRODUCTOS --- */
+/* --- GRID PRODUCTOS (2 EN CELULAR, 4 EN LAPTOP) --- */
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(2, 1fr); /* 2 en celular por defecto */
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .productos-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 en laptop */
+    gap: 18px;
+  }
 }
 
 .producto {
   background-color: var(--blanco);
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--sombra);
   border: 1px solid var(--borde);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
   position: relative;
 }
 
-.producto:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--sombra-hover);
-  border-color: var(--amarillo);
-}
-
 .producto-img-wrap {
   width: 100%;
-  height: 175px;
+  height: 140px;
   background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  padding: 8px;
   border-bottom: 1px solid var(--borde);
+}
+
+@media (min-width: 768px) {
+  .producto-img-wrap {
+    height: 170px;
+  }
 }
 
 .producto img {
@@ -490,15 +467,14 @@ body.modo-oscuro .boton-categoria.activa {
 }
 
 .producto-info {
-  padding: 14px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  gap: 4px;
 }
 
 .producto-tag {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
   font-weight: 700;
   color: var(--texto-suave);
@@ -506,28 +482,35 @@ body.modo-oscuro .boton-categoria.activa {
 
 .producto p {
   font-weight: 700;
-  font-size: 0.98rem;
+  font-size: 0.88rem;
   color: var(--texto);
 }
 
+@media (min-width: 768px) {
+  .producto p {
+    font-size: 0.95rem;
+  }
+}
+
+/* BOTÓN FAVORITO CORREGIDO PARA MODO OSCURO */
 .btn-favorito {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid var(--borde);
+  top: 8px;
+  right: 8px;
+  background: var(--negro);
+  border: 2px solid var(--amarillo);
   border-radius: 50%;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   display: none;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   z-index: 5;
 }
 
-/* --- MODALES Y CORRECCIÓN DE TAMAÑO DE IMAGEN GIGANTE --- */
+/* --- MODALES --- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -536,39 +519,38 @@ body.modo-oscuro .boton-categoria.activa {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  padding: 12px;
   z-index: 1100;
 }
 
 .modal-contenido {
   background: var(--blanco);
   color: var(--texto);
-  padding: 25px;
-  border-radius: 18px;
+  padding: 20px;
+  border-radius: 16px;
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
   text-align: center;
   position: relative;
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
-/* Limitamos la imagen del modal para que no se vea gigante */
 .modal-contenido img {
   width: 100%;
-  max-height: 220px;
+  max-height: 200px;
   object-fit: contain;
-  margin-bottom: 12px;
-  border-radius: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   background: #ffffff;
-  padding: 5px;
+  padding: 4px;
   border: 1px solid var(--borde);
 }
 
 .modal-contenido .cerrar {
   position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 28px;
+  top: 10px;
+  right: 14px;
+  font-size: 26px;
   font-weight: bold;
   color: var(--texto-suave);
   cursor: pointer;
@@ -576,12 +558,12 @@ body.modo-oscuro .boton-categoria.activa {
 
 .botones-flotantes-izq {
   position: fixed;
-  bottom: 20px;
-  left: 20px;
+  bottom: 15px;
+  left: 15px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
   z-index: 950;
 }
 
@@ -590,14 +572,14 @@ body.modo-oscuro .boton-categoria.activa {
   color: white;
   border: none;
   border-radius: 50px;
-  padding: 12px 18px;
+  padding: 10px 16px;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
   cursor: pointer;
   display: none;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 #btn-favoritos-flotante {
@@ -605,9 +587,9 @@ body.modo-oscuro .boton-categoria.activa {
   color: var(--blanco);
   border: 2px solid var(--amarillo);
   border-radius: 50px;
-  padding: 10px 18px;
+  padding: 8px 14px;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
   display: none;
   align-items: center;
@@ -619,15 +601,15 @@ body.modo-oscuro .boton-categoria.activa {
   justify-content: space-between;
   align-items: center;
   background: var(--fondo);
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
   border: 1px solid var(--borde);
-  gap: 10px;
+  gap: 8px;
 }
 
 .item-cotizador-modal span, .item-fav-modal span {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--texto);
 }
 
@@ -635,10 +617,10 @@ body.modo-oscuro .boton-categoria.activa {
   background: #ffebee;
   color: #c62828;
   border: none;
-  padding: 6px 10px;
+  padding: 5px 8px;
   border-radius: 6px;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   cursor: pointer;
 }
 
@@ -646,10 +628,10 @@ body.modo-oscuro .boton-categoria.activa {
   background-color: var(--amarillo);
   color: var(--negro);
   border: none;
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: 50px;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   cursor: pointer;
 }
 
@@ -660,38 +642,39 @@ body.modo-oscuro .boton-categoria.activa {
 }
 
 .campo-form {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  text-align: left;
 }
 
 .campo-form label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .campo-form input {
   width: 100%;
-  padding: 10px 12px;
+  padding: 9px 10px;
   border: 1px solid var(--borde);
   background: var(--fondo);
   color: var(--texto);
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   outline: none;
 }
 
 #btnSubir {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 15px;
+  right: 15px;
   background-color: var(--negro);
   color: var(--amarillo);
   border: 2px solid var(--amarillo);
   border-radius: 50%;
-  width: 46px;
-  height: 46px;
-  font-size: 18px;
+  width: 42px;
+  height: 42px;
+  font-size: 16px;
   cursor: pointer;
   z-index: 950;
   display: none;
@@ -701,10 +684,10 @@ footer {
   text-align: center;
   background-color: var(--negro);
   color: #aaa;
-  margin-top: 50px;
-  padding: 25px 15px;
+  margin-top: 40px;
+  padding: 20px 10px;
   border-top: 4px solid var(--amarillo);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .btn-admin-discreto {
@@ -712,7 +695,7 @@ footer {
   border: none;
   color: #444;
   cursor: pointer;
-  font-size: 0.85rem;
-  margin-top: 10px;
+  font-size: 0.8rem;
+  margin-top: 8px;
 }
 .btn-admin-discreto:hover { color: var(--amarillo); }
