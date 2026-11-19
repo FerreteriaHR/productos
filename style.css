@@ -163,7 +163,7 @@ nav a:hover, nav a.activo {
 .hero-badge {
   display: inline-block;
   background-color: #fff8e1;
-  color: #b28704;
+  color: #8a6500;
   font-weight: 700;
   font-size: 0.82rem;
   padding: 5px 12px;
@@ -548,6 +548,59 @@ body.modo-oscuro .boton-categoria.activa {
   font-weight: bold;
   color: var(--texto-suave);
   cursor: pointer;
+}
+
+.lista-ventajas {
+  list-style: none;
+  background-color: #fffbeb;
+  color: #222222;
+  border: 1px solid #ffe082;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+body.modo-oscuro .lista-ventajas {
+  background-color: #262210;
+  color: #f5f5f5;
+  border-color: #665500;
+}
+
+.btn-cotizar-add {
+  background-color: var(--amarillo);
+  color: #121212;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cotizar-add:hover {
+  background-color: var(--amarillo-hover);
+}
+
+.auth-switch-texto {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: var(--texto);
+}
+
+.link-auth-modo {
+  color: #9a7000;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+body.modo-oscuro .link-auth-modo {
+  color: #ffd54f;
 }
 
 .botones-flotantes-izq {
