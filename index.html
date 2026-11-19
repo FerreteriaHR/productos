@@ -54,7 +54,7 @@
         </div>
 
         <div class="social-buttons">
-          <a href="https://wa.me/528715238245" target="_blank" class="btn-social btn-whatsapp" rel="noopener">WhatsApp</a>
+          <a href="https://wa.me/528701690446" target="_blank" class="btn-social btn-whatsapp" rel="noopener">WhatsApp</a>
           <a href="https://www.facebook.com/profile.php?id=61575827222662" target="_blank" class="btn-social btn-facebook" rel="noopener">Facebook</a>
           <a href="https://www.instagram.com/hr_ferre?igsh=MTRjbGtncmhnZGtkdQ%3D%3D&utm_source=qr" target="_blank" class="btn-social btn-instagram" rel="noopener">Instagram</a>
         </div>
@@ -5917,7 +5917,7 @@
 
   </section>
 
-  <!-- SECCIÓN UBICACIÓN -->
+ <!-- SECCIÓN UBICACIÓN -->
     <section id="ubicacion-section" style="display:none;">
       <div class="seccion-card-completa">
         <div class="info-texto">
@@ -5926,7 +5926,7 @@
           <p>Nos encontramos ubicados en el corazón de Ciudad Lerdo, Durango. Visítanos en mostrador o contáctanos directamente.</p>
           <div class="detalles-contacto-grid">
             <div class="detalle-box"><strong>Dirección:</strong> Esquina Donato Guerra y Miguel Hidalgo, 95 Norte, Zona Centro.</div>
-            <div class="detalle-box"><strong>WhatsApp Mostrador:</strong> 871 523 8245</div>
+            <div class="detalle-box"><strong>WhatsApp Mostrador:</strong> 870 169 0446</div>
           </div>
           <div style="margin-top: 20px;">
             <a href="https://maps.app.goo.gl/vKLdieJXdp1bLKcCA" target="_blank" class="btn-social btn-whatsapp" style="display:inline-flex; justify-content:center; text-decoration:none;">
@@ -5971,7 +5971,6 @@
     </section>
   </main>
 
-  <!-- BOTONES FLOTANTES INFERIORES -->
   <div class="botones-flotantes-izq">
     <button id="btn-carrito-flotante" onclick="abrirModalCotizador()" style="display:none;"></button>
     <button id="btn-comprar-flotante" onclick="abrirModalCarrito()" style="display:none;"></button>
@@ -5987,7 +5986,6 @@
     <button class="btn-admin-discreto" id="btn-abrir-admin" title="Acceso Administración">🔒 Acceso Personal</button>
   </footer>
 
-  <!-- MODAL DE LISTA DE COTIZACIÓN -->
   <div id="modal-cotizador" class="modal-overlay" style="display:none;">
     <div class="modal-contenido" style="text-align:left; max-width:480px;">
       <span class="cerrar" onclick="cerrarModalCotizador()">&times;</span>
@@ -6002,7 +6000,6 @@
     </div>
   </div>
 
-  <!-- MODAL DE CARRITO / COMPRA (EXCLUSIVO CLIENTES) -->
   <div id="modal-carrito" class="modal-overlay" style="display:none;">
     <div class="modal-contenido" style="text-align:left; max-width:480px;">
       <span class="cerrar" onclick="cerrarModalCarrito()">&times;</span>
@@ -6017,7 +6014,6 @@
     </div>
   </div>
 
-  <!-- MODAL DE CLIENTE -->
   <div id="modal-cliente" class="modal-overlay" style="display:none;">
     <div class="modal-contenido" style="text-align:left;">
       <span class="cerrar" onclick="cerrarModalCliente()">&times;</span>
@@ -6026,9 +6022,9 @@
         <h2 id="auth-titulo" style="font-size:1.4rem; margin-bottom:6px;">Únete como cliente</h2>
         <p style="font-size:0.9rem; color:var(--texto-suave); margin-bottom:14px;">Crea una cuenta gratuita con tu correo y contraseña nueva.</p>
         
-        <ul class="lista-ventajas" style="list-style: none; background: #fffbeb; border: 1px solid #ffe082; border-radius: 10px; padding: 10px 12px; margin-bottom: 14px; font-size: 0.85rem;">
+        <ul class="lista-ventajas">
           <li>❤️ Guarda tus productos favoritos</li>
-          <li>🛒 **Acceso al Carrito de Compras** para apartar material</li>
+          <li>🛒 <strong>Acceso al Carrito de Compras</strong> para apartar material</li>
           <li>🏷️ Recibe avisos de promociones y nuevos productos</li>
         </ul>
 
@@ -6048,9 +6044,9 @@
           <p id="auth-error" style="color:#d32f2f; font-size:0.85rem; margin-top:8px; display:none;"></p>
           <button type="submit" id="btn-submit-auth" class="btn-cotizar-add" style="width:100%; margin-top:15px;">Crear mi cuenta gratis</button>
         </form>
-        <p style="text-align:center; margin-top:14px; font-size:0.9rem;">
+        <p class="auth-switch-texto">
           <span id="texto-cambiar-modo">¿Ya tienes cuenta aquí?</span>
-          <a href="#" onclick="alternarModoAuth(event)" id="link-cambiar-modo" style="color:var(--amarillo-hover); font-weight:700;">Inicia sesión</a>
+          <a href="#" onclick="alternarModoAuth(event)" id="link-cambiar-modo" class="link-auth-modo">Inicia sesión</a>
         </p>
       </div>
       <div id="vista-auth-perfil" style="display:none; text-align:center;">
@@ -6061,7 +6057,6 @@
     </div>
   </div>
 
-  <!-- MODAL DE FAVORITOS -->
   <div id="modal-favoritos" class="modal-overlay" style="display:none;">
     <div class="modal-contenido" style="text-align:left; max-width:460px;">
       <span class="cerrar" onclick="cerrarModalFavoritos()">&times;</span>
@@ -6079,7 +6074,6 @@
     </div>
   </div>
 
-  <!-- FIREBASE Y SCRIPT -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
