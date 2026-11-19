@@ -1,6 +1,3 @@
-// =========================================================
-// CONFIGURACIÓN FIREBASE
-// =========================================================
 const firebaseConfig = {
   apiKey: "AIzaSyBYdFpAvLpJspfe9WhugCbSqUDnFIjHRXc",
   authDomain: "ferreteria-hr.firebaseapp.com",
@@ -28,14 +25,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputBuscador = document.getElementById("buscador");
   const btnSubir = document.getElementById("btnSubir");
 
-  // Cargar modo oscuro guardado
   if (localStorage.getItem("ferre_modo_oscuro") === "true") {
     document.body.classList.add("modo-oscuro");
     const btnOscuro = document.getElementById("btn-modo-oscuro");
     if (btnOscuro) btnOscuro.textContent = "☀️ Modo Claro";
   }
 
-  // 1. Estructurar tarjetas de productos
   productos.forEach((prod, index) => {
     const img = prod.querySelector("img");
     const nombre = prod.querySelector("p");
@@ -59,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // 2. Auth listener
   if (typeof auth !== 'undefined') {
     auth.onAuthStateChanged(async (user) => {
       usuarioActual = user;
@@ -107,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 3. Modal de Producto Ampliado
   const modal = document.createElement("div");
   modal.id = "modal-producto";
   modal.className = "modal-overlay";
@@ -190,7 +183,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.target === document.getElementById("modal-carrito")) cerrarModalCarrito();
   });
 
-  // 4. Categorías
   botonesCategoria.forEach((boton) => {
     boton.addEventListener("click", function () {
       botonesCategoria.forEach((b) => b.classList.remove("activa"));
@@ -203,7 +195,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 5. BUSCADOR INSTANTÁNEO ULTRARRÁPIDO
   if (inputBuscador) {
     inputBuscador.addEventListener("input", function () {
       const texto = this.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -221,9 +212,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// =========================================================
-// MODO OSCURO
-// =========================================================
 function alternarModoOscuro() {
   document.body.classList.toggle("modo-oscuro");
   const esOscuro = document.body.classList.contains("modo-oscuro");
@@ -234,9 +222,6 @@ function alternarModoOscuro() {
   }
 }
 
-// =========================================================
-// NAVEGACIÓN Y SECCIONES
-// =========================================================
 function mostrarSeccion(seccion) {
   const secInicio = document.getElementById("inicio");
   const secProductos = document.getElementById("productos-section");
@@ -277,9 +262,6 @@ function mostrarSeccion(seccion) {
   }
 }
 
-// =========================================================
-// COTIZADOR WHATSAPP
-// =========================================================
 function actualizarBotonFlotanteCotizar() {
   const btn = document.getElementById("btn-carrito-flotante");
   if (!btn) return;
@@ -342,16 +324,13 @@ function enviarCotizacionWhatsAppPro() {
     `✨ ¡Quedo a la espera de su confirmación o disponibilidad!`
   );
 
-  window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
+  window.open(`https://wa.me/528701690446?text=${mensaje}`, "_blank");
   
   listaCotizacion = [];
   actualizarBotonFlotanteCotizar();
   cerrarModalCotizador();
 }
 
-// =========================================================
-// CARRITO DE COMPRAS / APARTAR EN MOSTRADOR
-// =========================================================
 function actualizarBotonFlotanteCompra() {
   const btn = document.getElementById("btn-comprar-flotante");
   if (!btn || !usuarioActual) {
@@ -432,16 +411,13 @@ function enviarCompraWhatsApp() {
     `💬 ¡Quedo pendiente de su confirmación con el total a pagar!`
   );
 
-  window.open(`https://wa.me/528715238245?text=${mensaje}`, "_blank");
+  window.open(`https://wa.me/528701690446?text=${mensaje}`, "_blank");
   
   listaCompras = [];
   actualizarBotonFlotanteCompra();
   cerrarModalCarrito();
 }
 
-// =========================================================
-// CLIENTES Y FAVORITOS
-// =========================================================
 function abrirModalCliente() {
   const modal = document.getElementById("modal-cliente");
   if (modal) modal.style.display = "flex";
