@@ -12,7 +12,6 @@
   --sombra-hover: 0 8px 20px rgba(0, 0, 0, 0.14);
 }
 
-/* --- MODO OSCURO --- */
 body.modo-oscuro {
   --fondo: #121212;
   --blanco: #1e1e1e;
@@ -41,7 +40,6 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* --- HEADER Y NAVEGACIÓN --- */
 .top-bar {
   background-color: var(--negro);
   color: var(--blanco);
@@ -137,14 +135,12 @@ nav a:hover, nav a.activo {
   cursor: pointer;
 }
 
-/* --- CONTENEDOR PRINCIPAL --- */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 12px;
 }
 
-/* --- HERO / INICIO --- */
 .hero-card {
   background: var(--blanco);
   border-radius: 16px;
@@ -227,7 +223,6 @@ body.modo-oscuro .hero-badge {
   object-fit: cover;
 }
 
-/* --- BOTONES REDES --- */
 .social-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -251,7 +246,6 @@ body.modo-oscuro .hero-badge {
 .btn-facebook { background-color: #1877f2; }
 .btn-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 
-/* --- SECCIONES (UBICACIÓN Y HORARIOS) --- */
 .seccion-card-completa {
   background: var(--blanco);
   border-radius: 16px;
@@ -340,7 +334,6 @@ body.modo-oscuro .aviso-24-7 {
   color: #ffe082;
 }
 
-/* --- CATÁLOGO --- */
 .catalogo-header {
   display: flex;
   flex-wrap: wrap;
@@ -418,7 +411,6 @@ body.modo-oscuro .boton-categoria.activa {
   color: var(--negro);
 }
 
-/* --- GRID PRODUCTOS --- */
 .productos-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -447,25 +439,26 @@ body.modo-oscuro .boton-categoria.activa {
 
 .producto-img-wrap {
   width: 100%;
-  height: 140px;
+  height: 165px;
   background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 0;
   border-bottom: 1px solid var(--borde);
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .producto-img-wrap {
-    height: 170px;
+    height: 200px;
   }
 }
 
 .producto img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .producto-info {
@@ -511,7 +504,6 @@ body.modo-oscuro .boton-categoria.activa {
   z-index: 5;
 }
 
-/* --- MODALES --- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -538,12 +530,13 @@ body.modo-oscuro .boton-categoria.activa {
 
 .modal-contenido img {
   width: 100%;
-  max-height: 180px;
+  height: 260px;
+  max-height: 260px;
   object-fit: contain;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   border-radius: 8px;
   background: #ffffff;
-  padding: 4px;
+  padding: 6px;
   border: 1px solid var(--borde);
 }
 
